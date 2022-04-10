@@ -11,12 +11,18 @@ type Account interface {
 	GetAccountByUserId(userId int64) (models.Account, error)
 }
 
+type Post interface {
+	CreatePost(post models.Post) (int64, error)
+}
+
 type Repository struct {
 	Account
+	Post
 }
 
 func NewRepository(db *sqlx.DB) *Repository {
 	return &Repository{
 		Account:NewAccountPostgres(db),
+		Post:NewPostPostgres(db),
 	}
 }

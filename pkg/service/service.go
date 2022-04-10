@@ -11,12 +11,18 @@ type Account interface {
 	GetAccountByUserId(userId int64) (models.Account, error)
 }
 
+type Post interface {
+	CreatePost(post models.Post) (int64, error)
+}
+
 type Service struct {
 	Account
+	Post
 }
 
 func NewService(repos *repository.Repository) *Service {
 	return &Service{
 		Account: NewAccountService(repos.Account),
+		Post:    NewPostService(repos.Post),
 	}
 }
