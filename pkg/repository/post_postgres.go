@@ -1,6 +1,7 @@
 package repository
 
 import (
+	"errors"
 	"fmt"
 	"github.com/amrchnk/account_service/pkg/models"
 	"github.com/jmoiron/sqlx"
@@ -36,15 +37,14 @@ func (r *PostPostgres) CreatePost(post models.Post) (int64, error) {
 	}
 
 	post.Id = postId
-	createImagesQuery:=fmt.Sprintf("INSERT INTO %s (link, post_id) VALUES ",imageTable)
+	createImagesQuery := fmt.Sprintf("INSERT INTO %s (link, post_id) VALUES ", imageTable)
 	var inserts []string
 	for _, image := range post.Images {
-		inserts=append(inserts,fmt.Sprintf("('%s',%d)",image.Link,postId))
+		inserts = append(inserts, fmt.Sprintf("('%s',%d)", image.Link, postId))
 	}
-	createImagesQuery+=strings.Join(inserts,",")
+	createImagesQuery += strings.Join(inserts, ",")
 
-	//_, err = r.db.NamedExec(createImagesQuery, post.Images)
-	_,err=tx.Exec(createImagesQuery)
+	_, err = tx.Exec(createImagesQuery)
 
 	if err != nil {
 		tx.Rollback()
@@ -52,4 +52,36 @@ func (r *PostPostgres) CreatePost(post models.Post) (int64, error) {
 	}
 
 	return postId, tx.Commit()
+}
+
+func (r *PostPostgres) DeletePostById(postId int64) error {
+	mu.Lock()
+	defer mu.Unlock()
+	var postExist bool
+
+	err := r.db.QueryRowx(fmt.Sprintf("SELECT 1 FROM %s WHERE id=$1", postTable), postId).Scan(&postExist)
+	if err != nil {
+		return err
+	}
+
+	if !postExist {
+		return errors.New("post doesn't exist")
+	}
+
+	tx, err := r.db.Begin()
+	if err != nil {
+		return err
+	}
+
+	deleteImagesQuery := fmt.Sprintf("DELETE FROM %s WHERE post_id=$1", imageTable)
+	_, err = tx.Exec(deleteImagesQuery, postId)
+	if err != nil {
+		tx.Rollback()
+		return err
+	}
+
+	deletePostQuery := fmt.Sprintf("DELETE FROM %s WHERE id=$1", postTable)
+	_, err = tx.Exec(deletePostQuery, postId)
+
+	return tx.Commit()
 }

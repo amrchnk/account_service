@@ -13,6 +13,7 @@ type Account interface {
 
 type Post interface {
 	CreatePost(post models.Post) (int64, error)
+	DeletePostById(postId int64) error
 }
 
 type Repository struct {

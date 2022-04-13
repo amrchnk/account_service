@@ -16,3 +16,7 @@ func NewPostService(repo repository.Post) *PostService {
 func (s *PostService) CreatePost(post models.Post) (int64, error) {
 	return s.repo.CreatePost(post)
 }
+
+func (s *PostService) DeletePostById(postId int64) error{
+	return s.repo.DeletePostById(postId)
+}

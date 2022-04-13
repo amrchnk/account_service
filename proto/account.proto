@@ -30,10 +30,15 @@ service AccountService {
     };
   }
 
+
+  //POST
   rpc CreatePost (CreatePostRequest) returns (CreatePostResponse){
 
   }
 
+  rpc DeletePostById (DeletePostByIdRequest) returns (DeletePostByIdResponse){
+
+  }
 
 }
 
@@ -66,12 +71,22 @@ message Account{
   int64 user_id = 2;
 }
 
+//POSTS
+
 message CreatePostRequest{
   Post post = 1;
 }
 
 message CreatePostResponse{
   int64 id = 1;
+}
+
+message DeletePostByIdRequest{
+  int64 id = 1;
+}
+
+message DeletePostByIdResponse{
+  string message = 1;
 }
 
 message Post {
