@@ -1,7 +1,6 @@
 package repository
 
 import (
-	"errors"
 	"fmt"
 	"github.com/amrchnk/account_service/pkg/models"
 	"github.com/jmoiron/sqlx"
@@ -64,10 +63,6 @@ func (r *PostPostgres) DeletePostById(postId int64) error {
 		return err
 	}
 
-	if !postExist {
-		return errors.New("post doesn't exist")
-	}
-
 	tx, err := r.db.Begin()
 	if err != nil {
 		return err
@@ -84,4 +79,32 @@ func (r *PostPostgres) DeletePostById(postId int64) error {
 	_, err = tx.Exec(deletePostQuery, postId)
 
 	return tx.Commit()
+}
+
+func (r *PostPostgres) GetPostById(postId int64) (models.Post, error) {
+	mu.Lock()
+	defer mu.Unlock()
+	var post models.Post
+	var postExist bool
+
+	err := r.db.QueryRowx(fmt.Sprintf("SELECT 1 FROM %s WHERE id=$1", postTable), postId).Scan(&postExist)
+	if err != nil {
+		return post, err
+	}
+
+	selectImagesQuery := fmt.Sprintf("SELECT link FROM %s WHERE post_id=$1", imageTable)
+	err = r.db.Select(&post.Images, selectImagesQuery, postId)
+
+	if err != nil {
+		return post, err
+	}
+
+	selectPostQuery := fmt.Sprintf("SELECT id, title, description, created_at, account_id FROM %s WHERE id=$1", postTable)
+	err = r.db.Get(&post, selectPostQuery, postId)
+
+	if err != nil {
+		return post, err
+	}
+
+	return post, nil
 }

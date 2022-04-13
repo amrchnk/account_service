@@ -4,41 +4,23 @@ package protobuf;
 
 option go_package = "/proto";
 
-import "google/api/annotations.proto";
 import "google/protobuf/timestamp.proto";
 
 service AccountService {
   //ACCOUNT
-  rpc CreateAccountByUserId (CreateAccountRequest) returns (CreateAccountResponse){
-    option(google.api.http) = {
-      post: "/api/v1/account/"
-      body: "*"
-    };
-  }
+  rpc CreateAccountByUserId (CreateAccountRequest) returns (CreateAccountResponse){}
 
-  rpc GetAccountByUserId (GetAccountByUserIdRequest) returns (GetAccountByUserIdResponse){
-    option(google.api.http) = {
-      get: "/api/v1/account/{user_id}"
-      body: "*"
-    };
-  }
+  rpc GetAccountByUserId (GetAccountByUserIdRequest) returns (GetAccountByUserIdResponse){}
 
-  rpc DeleteAccountByUserId (DeleteAccountByUserIdRequest) returns (DeleteAccountByUserIdResponse){
-    option(google.api.http) = {
-      delete: "/api/v1/account/{user_id}"
-      body: "*"
-    };
-  }
+  rpc DeleteAccountByUserId (DeleteAccountByUserIdRequest) returns (DeleteAccountByUserIdResponse){}
 
 
   //POST
-  rpc CreatePost (CreatePostRequest) returns (CreatePostResponse){
+  rpc CreatePost (CreatePostRequest) returns (CreatePostResponse){}
 
-  }
+  rpc DeletePostById (DeletePostByIdRequest) returns (DeletePostByIdResponse){}
 
-  rpc DeletePostById (DeletePostByIdRequest) returns (DeletePostByIdResponse){
-
-  }
+  rpc GetPostById (GetPostByIdRequest) returns (GetPostByIdResponse){}
 
 }
 
@@ -89,12 +71,20 @@ message DeletePostByIdResponse{
   string message = 1;
 }
 
+message GetPostByIdRequest{
+  int64 id = 1;
+}
+
+message GetPostByIdResponse{
+  Post post = 1;
+}
+
 message Post {
   int64 id = 1;
   string title = 2;
   string description = 3;
-  google.protobuf.Timestamp created_at = 4;
-  google.protobuf.Timestamp updated_at = 5;
+  string created_at = 4;
+  string updated_at = 5;
   repeated Image images = 6;
   int64 account_id = 7;
 }
