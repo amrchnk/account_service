@@ -33,32 +33,33 @@ func (i *Implementation) CreatePost(ctx context.Context, req *pb.CreatePostReque
 	}, err
 }
 
-func (i *Implementation) GetPostById(ctx context.Context,req *pb.GetPostByIdRequest)(*pb.GetPostByIdResponse,error){
-	resp,err:=i.Service.GetPostById(req.Id)
-	if err!=nil{
-		return nil,err
+func (i *Implementation) GetPostById(ctx context.Context, req *pb.GetPostByIdRequest) (*pb.GetPostByIdResponse, error) {
+	resp, err := i.Service.GetPostById(req.Id)
+	if err != nil {
+		return nil, err
 	}
-	var images []*pb.Image
-	if len(resp.Images)!=0{
-		images:= make([]pb.Image, 0, len(resp.Images))
-		for _,image:=range resp.Images{
-			images=append(images,pb.Image{
+	images := make([]*pb.Image, 0, len(resp.Images))
+	if len(resp.Images) != 0 {
+		for _, image := range resp.Images {
+			images = append(images, &pb.Image{
+				Id:image.Id,
 				Link: image.Link,
+				PostId: image.PostId,
 			})
 		}
 	}
 	return &pb.GetPostByIdResponse{
 		Post: &pb.Post{
-			Id: resp.Id,
-			Title: resp.Title,
+			Id:          resp.Id,
+			Title:       resp.Title,
 			Description: resp.Description,
-			CreatedAt: resp.CreatedAt.Format("2006-01-02 15:04:05"),
-			Images: images,
+			CreatedAt:   resp.CreatedAt.Format("2006-01-02 15:04:05"),
+			Images:      images,
 		},
-	},err
+	}, err
 }
 
-func (i *Implementation) DeletePostById (ctx context.Context,req *pb.DeletePostByIdRequest) (*pb.DeletePostByIdResponse, error) {
+func (i *Implementation) DeletePostById(ctx context.Context, req *pb.DeletePostByIdRequest) (*pb.DeletePostByIdResponse, error) {
 	err := i.Service.DeletePostById(req.Id)
 	if err != nil {
 		return nil, err
@@ -68,4 +69,35 @@ func (i *Implementation) DeletePostById (ctx context.Context,req *pb.DeletePostB
 	}, err
 }
 
+func (i *Implementation) GetPostsByUserId(ctx context.Context, req *pb.GetUserPostsRequest) (*pb.GetUserPostsResponse, error) {
+	posts, err := i.Service.GetPostsByUserId(req.UserId)
+	if err != nil {
+		return nil, err
+	}
 
+	postsResp := make([]*pb.Post, 0, len(posts))
+
+	for i := range posts {
+		images := make([]*pb.Image, 0, len(posts[i].Images))
+		if len(posts[i].Images) != 0 {
+			for _, image := range posts[i].Images {
+				images = append(images, &pb.Image{
+					Id:image.Id,
+					Link: image.Link,
+					PostId: image.PostId,
+				})
+			}
+		}
+
+		postsResp = append(postsResp, &pb.Post{
+			Id:          posts[i].Id,
+			Title:       posts[i].Title,
+			Description: posts[i].Description,
+			CreatedAt:   posts[i].CreatedAt.Format("2006-01-02 15:04:05"),
+			Images:      images,
+		})
+	}
+	return &pb.GetUserPostsResponse{
+		Posts: postsResp,
+	}, err
+}

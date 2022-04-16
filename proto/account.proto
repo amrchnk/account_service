@@ -22,6 +22,8 @@ service AccountService {
 
   rpc GetPostById (GetPostByIdRequest) returns (GetPostByIdResponse){}
 
+  rpc GetPostsByUserId (GetUserPostsRequest) returns (GetUserPostsResponse){}
+
 }
 
 message CreateAccountRequest{
@@ -77,6 +79,14 @@ message GetPostByIdRequest{
 
 message GetPostByIdResponse{
   Post post = 1;
+}
+
+message GetUserPostsRequest{
+  int64 user_id = 1;
+}
+
+message GetUserPostsResponse{
+  repeated Post posts = 1;
 }
 
 message Post {

@@ -53,7 +53,6 @@ func main(){
 	repos := repository.NewRepository(db)
 	services := service.NewService(repos)
 
-	repos.Post.GetPostById(10)
 	pb.RegisterAccountServiceServer(grpcServer, handler.NewService(services))
 	go func() {
 		if err := grpcServer.Serve(con); err != nil {
