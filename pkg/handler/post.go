@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"github.com/amrchnk/account_service/pkg/models"
 	pb "github.com/amrchnk/account_service/proto"
+	"log"
 	"time"
 )
 
@@ -28,6 +29,8 @@ func (i *Implementation) CreatePost(ctx context.Context, req *pb.CreatePostReque
 	if err != nil {
 		return nil, err
 	}
+
+	log.Printf("[INFO] Account with id = %d was created",postId)
 	return &pb.CreatePostResponse{
 		Id: postId,
 	}, err
