@@ -112,20 +112,20 @@ func (r *PostPostgres) GetPostById(postId int64) (models.Post, error) {
 	return post, nil
 }
 
-func (r *PostPostgres) GetPostsByUserId(userId int64) ([]models.Post, error) {
+func (r *PostPostgres) GetPostsByAccountId(accountId int64) ([]models.Post, error) {
 	mu.Lock()
 	defer mu.Unlock()
 	var posts []models.Post
 
-	var userExist bool
+	var accountExist bool
 
-	err := r.db.QueryRowx(fmt.Sprintf("SELECT 1 FROM %s WHERE user_id=$1", accountsTable), userId).Scan(&userExist)
+	err := r.db.QueryRowx(fmt.Sprintf("SELECT 1 FROM %s WHERE account_id=$1", postTable), accountId).Scan(&accountExist)
 	if err != nil {
 		return posts, err
 	}
 
-	selectPostsQuery := fmt.Sprintf("SELECT p.id,p.title,p.description,p.created_at FROM %s p INNER JOIN %s ac ON p.account_id=ac.id WHERE user_id=$1", postTable, accountsTable)
-	err = r.db.Select(&posts, selectPostsQuery, userId)
+	selectPostsQuery := fmt.Sprintf("SELECT id, title, description, created_at, account_id FROM %s WHERE account_id=$1", postTable)
+	err = r.db.Select(&posts, selectPostsQuery, accountId)
 
 	for index := range posts {
 		var images []models.Image
