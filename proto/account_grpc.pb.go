@@ -30,7 +30,7 @@ type AccountServiceClient interface {
 	CreatePost(ctx context.Context, in *CreatePostRequest, opts ...grpc.CallOption) (*CreatePostResponse, error)
 	DeletePostById(ctx context.Context, in *DeletePostByIdRequest, opts ...grpc.CallOption) (*DeletePostByIdResponse, error)
 	GetPostById(ctx context.Context, in *GetPostByIdRequest, opts ...grpc.CallOption) (*GetPostByIdResponse, error)
-	GetPostsByAccountId(ctx context.Context, in *GetUserPostsRequest, opts ...grpc.CallOption) (*GetUserPostsResponse, error)
+	GetPostsByUserId(ctx context.Context, in *GetUserPostsRequest, opts ...grpc.CallOption) (*GetUserPostsResponse, error)
 }
 
 type accountServiceClient struct {
@@ -95,9 +95,9 @@ func (c *accountServiceClient) GetPostById(ctx context.Context, in *GetPostByIdR
 	return out, nil
 }
 
-func (c *accountServiceClient) GetPostsByAccountId(ctx context.Context, in *GetUserPostsRequest, opts ...grpc.CallOption) (*GetUserPostsResponse, error) {
+func (c *accountServiceClient) GetPostsByUserId(ctx context.Context, in *GetUserPostsRequest, opts ...grpc.CallOption) (*GetUserPostsResponse, error) {
 	out := new(GetUserPostsResponse)
-	err := c.cc.Invoke(ctx, "/protobuf.AccountService/GetPostsByAccountId", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/protobuf.AccountService/GetPostsByUserId", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -116,7 +116,7 @@ type AccountServiceServer interface {
 	CreatePost(context.Context, *CreatePostRequest) (*CreatePostResponse, error)
 	DeletePostById(context.Context, *DeletePostByIdRequest) (*DeletePostByIdResponse, error)
 	GetPostById(context.Context, *GetPostByIdRequest) (*GetPostByIdResponse, error)
-	GetPostsByAccountId(context.Context, *GetUserPostsRequest) (*GetUserPostsResponse, error)
+	GetPostsByUserId(context.Context, *GetUserPostsRequest) (*GetUserPostsResponse, error)
 	mustEmbedUnimplementedAccountServiceServer()
 }
 
@@ -142,8 +142,8 @@ func (UnimplementedAccountServiceServer) DeletePostById(context.Context, *Delete
 func (UnimplementedAccountServiceServer) GetPostById(context.Context, *GetPostByIdRequest) (*GetPostByIdResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetPostById not implemented")
 }
-func (UnimplementedAccountServiceServer) GetPostsByAccountId(context.Context, *GetUserPostsRequest) (*GetUserPostsResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetPostsByAccountId not implemented")
+func (UnimplementedAccountServiceServer) GetPostsByUserId(context.Context, *GetUserPostsRequest) (*GetUserPostsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetPostsByUserId not implemented")
 }
 func (UnimplementedAccountServiceServer) mustEmbedUnimplementedAccountServiceServer() {}
 
@@ -266,20 +266,20 @@ func _AccountService_GetPostById_Handler(srv interface{}, ctx context.Context, d
 	return interceptor(ctx, in, info, handler)
 }
 
-func _AccountService_GetPostsByAccountId_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _AccountService_GetPostsByUserId_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(GetUserPostsRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(AccountServiceServer).GetPostsByAccountId(ctx, in)
+		return srv.(AccountServiceServer).GetPostsByUserId(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/protobuf.AccountService/GetPostsByAccountId",
+		FullMethod: "/protobuf.AccountService/GetPostsByUserId",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(AccountServiceServer).GetPostsByAccountId(ctx, req.(*GetUserPostsRequest))
+		return srv.(AccountServiceServer).GetPostsByUserId(ctx, req.(*GetUserPostsRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -316,8 +316,8 @@ var AccountService_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _AccountService_GetPostById_Handler,
 		},
 		{
-			MethodName: "GetPostsByAccountId",
-			Handler:    _AccountService_GetPostsByAccountId_Handler,
+			MethodName: "GetPostsByUserId",
+			Handler:    _AccountService_GetPostsByUserId_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

@@ -23,7 +23,7 @@ func init(){
 		log.Fatalf("error initializing configs: %s", err.Error())
 	}
 
-	err = godotenv.Load(filepath.Join("./", ".env"))
+	err = godotenv.Load(filepath.Join("../", ".env"))
 	if err != nil {
 		log.Fatalf("error loading env variables: %s", err.Error())
 	}
@@ -59,7 +59,7 @@ func main(){
 			log.Fatalf("error occured while running http server: %s", err.Error())
 		}
 	}()
-	log.Printf("Auth service started at port :%s", viper.GetString("port"))
+	log.Printf("Account service started at port :%s", viper.GetString("port"))
 
 	quit := make(chan os.Signal, 1)
 	signal.Notify(quit, syscall.SIGTERM, syscall.SIGINT)
@@ -74,7 +74,7 @@ func main(){
 }
 
 func initConfig() error {
-	viper.AddConfigPath("./configs")
+	viper.AddConfigPath("../configs")
 	viper.SetConfigName("config")
 	return viper.ReadInConfig()
 }

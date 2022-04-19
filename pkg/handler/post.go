@@ -72,8 +72,8 @@ func (i *Implementation) DeletePostById(ctx context.Context, req *pb.DeletePostB
 	}, err
 }
 
-func (i *Implementation) GetPostsByAccountId(ctx context.Context, req *pb.GetUserPostsRequest) (*pb.GetUserPostsResponse, error) {
-	posts, err := i.Service.GetPostsByAccountId(req.AccountId)
+func (i *Implementation) GetPostsByUserId(ctx context.Context, req *pb.GetUserPostsRequest) (*pb.GetUserPostsResponse, error) {
+	posts, err := i.Service.GetPostsByUserId(req.UserId)
 	if err != nil {
 		return nil, err
 	}

@@ -10,3 +10,11 @@ services:
       - "POSTGRES_DB=account_service"
     ports:
       - "5436:5432"
+
+#  test:
+#    container_name: accounts_app
+#    build: ./
+#    ports:
+#      - "8002:8002"
+#    depends_on:
+#      - db

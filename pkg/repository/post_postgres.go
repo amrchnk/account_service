@@ -112,14 +112,14 @@ func (r *PostPostgres) GetPostById(postId int64) (models.Post, error) {
 	return post, nil
 }
 
-func (r *PostPostgres) GetPostsByAccountId(accountId int64) ([]models.Post, error) {
+func (r *PostPostgres) GetPostsByUserId(userId int64) ([]models.Post, error) {
 	mu.Lock()
 	defer mu.Unlock()
 	var posts []models.Post
 
-	var accountExist bool
+	var accountId int64
 
-	err := r.db.QueryRowx(fmt.Sprintf("SELECT 1 FROM %s WHERE account_id=$1", postTable), accountId).Scan(&accountExist)
+	err := r.db.QueryRowx(fmt.Sprintf("SELECT id FROM %s WHERE user_id=$1", accountsTable), userId).Scan(&accountId)
 	if err != nil {
 		return posts, err
 	}
