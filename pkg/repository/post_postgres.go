@@ -1,6 +1,8 @@
 package repository
 
 import (
+	"database/sql"
+	"errors"
 	"fmt"
 	"github.com/amrchnk/account_service/pkg/models"
 	"github.com/jmoiron/sqlx"
@@ -116,16 +118,32 @@ func (r *PostPostgres) GetPostsByUserId(userId int64) ([]models.Post, error) {
 	mu.Lock()
 	defer mu.Unlock()
 	var posts []models.Post
-
 	var accountId int64
 
 	err := r.db.QueryRowx(fmt.Sprintf("SELECT id FROM %s WHERE user_id=$1", accountsTable), userId).Scan(&accountId)
+	if errors.Is(err, sql.ErrNoRows) {
+		var id int64
+		CreateAccountQuery := fmt.Sprintf("INSERT INTO %s (user_id,created_at) values ($1, $2) RETURNING id", accountsTable)
+		row := r.db.QueryRow(CreateAccountQuery, userId, time.Now())
+		if err = row.Scan(&id); err != nil {
+			return posts, err
+		}
+		return posts, nil
+	}
+
 	if err != nil {
 		return posts, err
 	}
 
 	selectPostsQuery := fmt.Sprintf("SELECT id, title, description, created_at, account_id FROM %s WHERE account_id=$1", postTable)
 	err = r.db.Select(&posts, selectPostsQuery, accountId)
+	if errors.Is(err, sql.ErrNoRows) {
+		return posts, nil
+	}
+
+	if err != nil {
+		return posts, err
+	}
 
 	for index := range posts {
 		var images []models.Image

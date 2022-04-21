@@ -9,6 +9,7 @@ type Account interface {
 	CreateAccountByUserId(userId int64) (int64, error)
 	DeleteAccountByUserId(userId int64) error
 	GetAccountByUserId(userId int64) (models.Account, error)
+	GetAllAccounts() ([]models.Account, error)
 }
 
 type Post interface {
@@ -25,7 +26,7 @@ type Repository struct {
 
 func NewRepository(db *sqlx.DB) *Repository {
 	return &Repository{
-		Account:NewAccountPostgres(db),
-		Post:NewPostPostgres(db),
+		Account: NewAccountPostgres(db),
+		Post:    NewPostPostgres(db),
 	}
 }

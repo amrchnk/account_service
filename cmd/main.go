@@ -17,19 +17,19 @@ import (
 	"syscall"
 )
 
-func init(){
+func init() {
 	err := initConfig()
 	if err != nil {
 		log.Fatalf("error initializing configs: %s", err.Error())
 	}
 
-	err = godotenv.Load(filepath.Join("../", ".env"))
+	err = godotenv.Load(filepath.Join("././", ".env"))
 	if err != nil {
 		log.Fatalf("error loading env variables: %s", err.Error())
 	}
 }
 
-func main(){
+func main() {
 	con, err := net.Listen("tcp", ":"+viper.GetString("port"))
 	if err != nil {
 		log.Fatalf("tcp connection error: %v", err)
@@ -51,6 +51,7 @@ func main(){
 		log.Fatalf("failed to initialize db: %s", err.Error())
 	}
 	repos := repository.NewRepository(db)
+
 	services := service.NewService(repos)
 
 	pb.RegisterAccountServiceServer(grpcServer, handler.NewService(services))
@@ -74,7 +75,7 @@ func main(){
 }
 
 func initConfig() error {
-	viper.AddConfigPath("../configs")
+	viper.AddConfigPath("././configs")
 	viper.SetConfigName("config")
 	return viper.ReadInConfig()
 }

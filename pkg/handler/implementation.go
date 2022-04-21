@@ -1,8 +1,8 @@
 package handler
 
-import(
+import (
 	"github.com/amrchnk/account_service/pkg/service"
-	pb"github.com/amrchnk/account_service/proto"
+	pb "github.com/amrchnk/account_service/proto"
 	"sync"
 )
 
@@ -12,8 +12,8 @@ type Implementation struct {
 	mu sync.Mutex
 }
 
-func NewService(s *service.Service)*Implementation{
+func NewService(s *service.Service) *Implementation {
 	return &Implementation{
-		Service:s,
+		Service: s,
 	}
 }

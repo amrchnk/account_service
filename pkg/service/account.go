@@ -21,6 +21,6 @@ func (s *AccountService) DeleteAccountByUserId(userId int64) error {
 	return s.repo.DeleteAccountByUserId(userId)
 }
 
-func (s *AccountService) GetAccountByUserId(userId int64) (models.Account, error){
+func (s *AccountService) GetAccountByUserId(userId int64) (models.Account, error) {
 	return s.repo.GetAccountByUserId(userId)
 }

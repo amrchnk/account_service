@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package protobuf;
 
-option go_package = "/proto";
+option go_package = "/proto/account";
 
 import "google/protobuf/timestamp.proto";
 
@@ -23,7 +23,6 @@ service AccountService {
   rpc GetPostById (GetPostByIdRequest) returns (GetPostByIdResponse){}
 
   rpc GetPostsByUserId (GetUserPostsRequest) returns (GetUserPostsResponse){}
-
 }
 
 message CreateAccountRequest{
@@ -53,7 +52,7 @@ message DeleteAccountByUserIdResponse{
 message Account{
   int64 id = 1;
   int64 user_id = 2;
-  string created_at=3;
+  string created_at = 3;
 }
 
 //POSTS
@@ -87,7 +86,8 @@ message GetUserPostsRequest{
 }
 
 message GetUserPostsResponse{
-  repeated Post posts = 1;
+  int64 user_id = 1;
+  repeated Post posts = 2;
 }
 
 message Post {
