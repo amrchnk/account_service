@@ -22,7 +22,7 @@ func (i *Implementation) DeleteAccountByUserId(ctx context.Context, req *pb.Dele
 	if err != nil {
 		return &pb.DeleteAccountByUserIdResponse{Message: string(err.Error())}, err
 	}
-	log.Print("[INFO] User account was deleted")
+	log.Println("[INFO] User account was deleted")
 	return &pb.DeleteAccountByUserIdResponse{Message: "Account was delete successful"}, nil
 }
 

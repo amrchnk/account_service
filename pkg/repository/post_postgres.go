@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"github.com/amrchnk/account_service/pkg/models"
 	"github.com/jmoiron/sqlx"
+	"log"
 	"strings"
 	"time"
 )
@@ -33,6 +34,7 @@ func (r *PostPostgres) CreatePost(post models.Post) (int64, error) {
 	row := tx.QueryRow(createPostQuery, post.Title, post.Description, time.Now(), post.AccountId)
 	err = row.Scan(&postId)
 	if err != nil {
+		log.Printf("[ERROR]: %v",err)
 		tx.Rollback()
 		return 0, err
 	}
@@ -48,6 +50,7 @@ func (r *PostPostgres) CreatePost(post models.Post) (int64, error) {
 	_, err = tx.Exec(createImagesQuery)
 
 	if err != nil {
+		log.Printf("[ERROR]: %v",err)
 		tx.Rollback()
 		return 0, fmt.Errorf("error while adding images: %v", err)
 	}
@@ -62,6 +65,7 @@ func (r *PostPostgres) DeletePostById(postId int64) error {
 
 	err := r.db.QueryRowx(fmt.Sprintf("SELECT 1 FROM %s WHERE id=$1", postTable), postId).Scan(&postExist)
 	if err != nil {
+		log.Printf("[ERROR]: %v",err)
 		return err
 	}
 
@@ -73,12 +77,18 @@ func (r *PostPostgres) DeletePostById(postId int64) error {
 	deleteImagesQuery := fmt.Sprintf("DELETE FROM %s WHERE post_id=$1", imageTable)
 	_, err = tx.Exec(deleteImagesQuery, postId)
 	if err != nil {
+		log.Printf("[ERROR]: %v",err)
 		tx.Rollback()
 		return err
 	}
 
 	deletePostQuery := fmt.Sprintf("DELETE FROM %s WHERE id=$1", postTable)
 	_, err = tx.Exec(deletePostQuery, postId)
+	if err!=nil{
+		log.Printf("[ERROR]: %v",err)
+		tx.Rollback()
+		return err
+	}
 
 	return tx.Commit()
 }
@@ -91,6 +101,10 @@ func (r *PostPostgres) GetPostById(postId int64) (models.Post, error) {
 	var postExist bool
 
 	err := r.db.QueryRowx(fmt.Sprintf("SELECT 1 FROM %s WHERE id=$1", postTable), postId).Scan(&postExist)
+	if errors.Is(err, sql.ErrNoRows){
+		log.Printf("[ERROR]: %v",err)
+		return post,errors.New("post doesn't exist")
+	}
 	if err != nil {
 		return post, err
 	}

@@ -1,6 +1,8 @@
 package repository
 
 import (
+	"database/sql"
+	"errors"
 	"fmt"
 	"github.com/amrchnk/account_service/pkg/models"
 	"github.com/jmoiron/sqlx"
@@ -24,7 +26,9 @@ func (r *AccountPostgres) CreateAccountByUserId(userId int64) (int64, error) {
 	var id int64
 	CreateAccountQuery := fmt.Sprintf("INSERT INTO %s (user_id,created_at) values ($1, $2) RETURNING id", accountsTable)
 	row := r.db.QueryRow(CreateAccountQuery, userId, time.Now())
-	if err := row.Scan(&id); err != nil {
+	err := row.Scan(&id)
+
+	if err != nil {
 		return 0, err
 	}
 
@@ -47,5 +51,8 @@ func (r *AccountPostgres) GetAccountByUserId(userId int64) (models.Account, erro
 	var account models.Account
 	GetAccountQuery := fmt.Sprintf("SELECT * FROM %s where user_id=$1", accountsTable)
 	err := r.db.Get(&account, GetAccountQuery, userId)
+	if errors.Is(err, sql.ErrNoRows){
+
+	}
 	return account, err
 }
