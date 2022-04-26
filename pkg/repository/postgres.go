@@ -10,6 +10,8 @@ const (
 	accountsTable = "account"
 	postTable     = "post"
 	imageTable    = "image"
+
+	defaultAvatarUrl = "https://res.cloudinary.com/disfhw1xf/image/upload/v1650831308/design_app/avatars/default_uivmhy.svg"
 )
 
 type Config struct {
