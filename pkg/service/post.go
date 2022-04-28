@@ -25,6 +25,10 @@ func (s *PostService) GetPostById(postId int64) (models.Post, error) {
 	return s.repo.GetPostById(postId)
 }
 
+func (s *PostService) UpdatePostByd(post models.Post) (string, error){
+	return s.repo.UpdatePostByd(post)
+}
+
 func (s *PostService) GetPostsByUserId(userId int64) ([]models.Post, error) {
 	return s.repo.GetPostsByUserId(userId)
 }

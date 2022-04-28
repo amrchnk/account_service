@@ -16,6 +16,7 @@ type Post interface {
 	CreatePost(post models.Post) (int64, error)
 	DeletePostById(postId int64) error
 	GetPostById(postId int64) (models.Post, error)
+	UpdatePostByd(post models.Post) (string, error)
 	GetPostsByUserId(userId int64) ([]models.Post, error)
 }
 

@@ -56,7 +56,7 @@ CREATE TABLE IF NOT EXISTS posts_have_tags
 CREATE TABLE IF NOT EXISTS posts_have_categories
 (
     post_id int REFERENCES public.post (id) ON DELETE CASCADE,
-    tag_id  int REFERENCES public.category (id) ON DELETE CASCADE
+    category_id  int REFERENCES public.category (id) ON DELETE CASCADE
 );
 
 INSERT INTO category(title)

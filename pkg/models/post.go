@@ -9,6 +9,7 @@ type Post struct {
 	CreatedAt   time.Time `json:"created_at" db:"created_at"`
 	UpdatedAt   time.Time `json:"updated_at" db:"updated_at"`
 	Images      []Image   `json:"images"`
+	Categories  []int64  `json:"categories"`
 	AccountId   int64     `json:"account_id" db:"account_id" binding:"required"`
 }
 

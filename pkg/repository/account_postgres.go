@@ -66,6 +66,12 @@ func (r *AccountPostgres) UpdateAccountInfo(updates models.UpdateAccountInfo) (i
 	UpdateAccountQuery := fmt.Sprintf("UPDATE %s SET profile_image = $1 WHERE user_id = $2 RETURNING id", accountsTable)
 	row := r.db.QueryRow(UpdateAccountQuery, updates.ProfileImage, updates.UserId)
 	err := row.Scan(&accountId)
+
+	if errors.Is(err, sql.ErrNoRows){
+		log.Printf("[ERROR]: %v",err)
+		return 0,errors.New("account doesn't exist")
+	}
+
 	if err != nil {
 		return 0, err
 	}

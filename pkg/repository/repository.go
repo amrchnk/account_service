@@ -17,6 +17,7 @@ type Post interface {
 	DeletePostById(postId int64) error
 	GetPostById(postId int64) (models.Post, error)
 	GetPostsByUserId(userId int64) ([]models.Post, error)
+	UpdatePostByd(post models.Post) (string, error)
 }
 
 type Repository struct {

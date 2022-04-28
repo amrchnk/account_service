@@ -51,6 +51,7 @@ func main() {
 		log.Fatalf("failed to initialize db: %s", err.Error())
 	}
 	repos := repository.NewRepository(db)
+	//repos.Post.UpdatePostByd(models.Post{})
 
 	services := service.NewService(repos)
 
