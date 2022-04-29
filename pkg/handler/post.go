@@ -21,7 +21,9 @@ func (i *Implementation) CreatePost(ctx context.Context, req *pb.CreatePostReque
 		Title:       req.Post.Title,
 		Description: req.Post.Description,
 		CreatedAt:   time.Now(),
+		UpdatedAt:   time.Now(),
 		Images:      images,
+		Categories:  req.Post.Categories,
 		AccountId:   req.Post.AccountId,
 	}
 
@@ -59,7 +61,9 @@ func (i *Implementation) GetPostById(ctx context.Context, req *pb.GetPostByIdReq
 			Description: resp.Description,
 			CreatedAt:   resp.CreatedAt.Format("2006-01-02 15:04:05"),
 			Images:      images,
+			Categories:  resp.Categories,
 			UpdatedAt:   resp.UpdatedAt.Format("2006-01-02 15:04:05"),
+			AccountId:   resp.AccountId,
 		},
 	}, err
 }
@@ -127,6 +131,8 @@ func (i *Implementation) GetPostsByUserId(ctx context.Context, req *pb.GetUserPo
 			Title:       posts[i].Title,
 			Description: posts[i].Description,
 			CreatedAt:   posts[i].CreatedAt.Format("2006-01-02 15:04:05"),
+			UpdatedAt:   posts[i].UpdatedAt.Format("2006-01-02 15:04:05"),
+			Categories:  posts[i].Categories,
 			Images:      images,
 			AccountId:   posts[i].AccountId,
 		})

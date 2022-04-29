@@ -25,13 +25,15 @@ func (r *PostPostgres) CreatePost(post models.Post) (int64, error) {
 
 	tx, err := r.db.Begin()
 	if err != nil {
+		log.Printf("[ERROR]: %v", err)
+		tx.Rollback()
 		return 0, err
 	}
 
 	var postId int64
-	createPostQuery := fmt.Sprintf("INSERT INTO %s (title, description,created_at,account_id) values ($1, $2,$3, $4) RETURNING id", postTable)
+	createPostQuery := fmt.Sprintf("INSERT INTO %s (title, description,created_at, updated_at, account_id) values ($1, $2,$3, $4, $5) RETURNING id", postTable)
 
-	row := tx.QueryRow(createPostQuery, post.Title, post.Description, time.Now(), post.AccountId)
+	row := tx.QueryRow(createPostQuery, post.Title, post.Description, time.Now(), time.Now(), post.AccountId)
 	err = row.Scan(&postId)
 	if err != nil {
 		log.Printf("[ERROR]: %v", err)
@@ -55,6 +57,33 @@ func (r *PostPostgres) CreatePost(post models.Post) (int64, error) {
 		return 0, fmt.Errorf("error while adding images: %v", err)
 	}
 
+	if len(post.Categories) > 0 {
+		createPostCategoriesQuery := fmt.Sprintf("INSERT INTO %s (category_id, post_id) VALUES ", postsCategoriesTable)
+		var inserts []string
+		for _, category := range post.Categories {
+			inserts = append(inserts, fmt.Sprintf("('%d',%d)", category, postId))
+		}
+
+		createPostCategoriesQuery += strings.Join(inserts, ",")
+
+		_, err = tx.Exec(createPostCategoriesQuery)
+
+		if err != nil {
+			log.Printf("[ERROR]: %v", err)
+			tx.Rollback()
+			return 0, fmt.Errorf("error while adding categories to post: %v", err)
+		}
+	}
+	createPostCategoriesQuery := fmt.Sprintf("INSERT INTO %s (category_id, post_id) VALUES ", postsCategoriesTable)
+	createPostCategoriesQuery += fmt.Sprintf("('%d',%d)", 1, postId)
+
+	_, err = tx.Exec(createPostCategoriesQuery)
+	if err != nil {
+		log.Printf("[ERROR]: %v", err)
+		tx.Rollback()
+		return 0, fmt.Errorf("error while adding categories to post: %v", err)
+	}
+
 	return postId, tx.Commit()
 }
 
@@ -65,6 +94,11 @@ func (r *PostPostgres) DeletePostById(postId int64) error {
 
 	err := r.db.QueryRowx(fmt.Sprintf("SELECT 1 FROM %s WHERE id=$1", postTable), postId).Scan(&postExist)
 	if err != nil {
+		if errors.Is(err, sql.ErrNoRows) {
+			log.Printf("[ERROR]: %v", err)
+			return fmt.Errorf("post doesn't exist")
+		}
+
 		log.Printf("[ERROR]: %v", err)
 		return err
 	}
@@ -101,11 +135,14 @@ func (r *PostPostgres) GetPostById(postId int64) (models.Post, error) {
 	var postExist bool
 
 	err := r.db.QueryRowx(fmt.Sprintf("SELECT 1 FROM %s WHERE id=$1", postTable), postId).Scan(&postExist)
-	if errors.Is(err, sql.ErrNoRows) {
-		log.Printf("[ERROR]: %v", err)
-		return post, fmt.Errorf("post doesn't exist")
-	}
+
 	if err != nil {
+		if errors.Is(err, sql.ErrNoRows) {
+			log.Printf("[ERROR]: %v", err)
+			return post, fmt.Errorf("post doesn't exist")
+		}
+
+		log.Printf("[ERROR]: %v", err)
 		return post, err
 	}
 
@@ -113,13 +150,30 @@ func (r *PostPostgres) GetPostById(postId int64) (models.Post, error) {
 	err = r.db.Select(&images, selectImagesQuery, postId)
 
 	if err != nil {
+		log.Printf("[ERROR]: %v", err)
 		return post, err
+	}
+
+	var categories []uint8
+	selectCategoriesQuery := fmt.Sprintf("SELECT category_id FROM %s WHERE post_id=$1", postsCategoriesTable)
+	err = r.db.Select(&categories, selectCategoriesQuery, postId)
+
+	if err != nil {
+		log.Printf("[ERROR]: %v", err)
+		return post, err
+	}
+
+	if len(categories) > 0 {
+		for _, category := range categories {
+			post.Categories = append(post.Categories, int64(category))
+		}
 	}
 
 	selectPostQuery := fmt.Sprintf("SELECT * FROM %s WHERE id=$1", postTable)
 	err = r.db.Get(&post, selectPostQuery, postId)
 
 	if err != nil {
+		log.Printf("[ERROR]: %v", err)
 		return post, err
 	}
 
@@ -199,7 +253,7 @@ func (r *PostPostgres) UpdatePostByd(post models.Post) (string, error) {
 	argId := 1
 
 	setValues = append(setValues, fmt.Sprintf("updated_at=$%d", argId))
-	post.UpdatedAt=time.Now()
+	post.UpdatedAt = time.Now()
 	args = append(args, post.UpdatedAt)
 	argId++
 
@@ -218,8 +272,7 @@ func (r *PostPostgres) UpdatePostByd(post models.Post) (string, error) {
 	setQuery := strings.Join(setValues, ", ")
 
 	query := fmt.Sprintf(`UPDATE %s p SET %s WHERE p.id = %d`,
-		postTable, setQuery,post.Id)
-
+		postTable, setQuery, post.Id)
 
 	_, err = r.db.Exec(query, args...)
 	if err != nil {
@@ -227,7 +280,7 @@ func (r *PostPostgres) UpdatePostByd(post models.Post) (string, error) {
 		return "", err
 	}
 
-	return fmt.Sprintf("Post with id = %d was updated",post.Id), tx.Commit()
+	return fmt.Sprintf("Post with id = %d was updated", post.Id), tx.Commit()
 }
 
 func (r *PostPostgres) GetPostsByUserId(userId int64) ([]models.Post, error) {
@@ -253,11 +306,11 @@ func (r *PostPostgres) GetPostsByUserId(userId int64) ([]models.Post, error) {
 
 	selectPostsQuery := fmt.Sprintf("SELECT id, title, description, created_at, account_id FROM %s WHERE account_id=$1", postTable)
 	err = r.db.Select(&posts, selectPostsQuery, accountId)
-	if errors.Is(err, sql.ErrNoRows) {
-		return posts, nil
-	}
-
 	if err != nil {
+		if errors.Is(err, sql.ErrNoRows) {
+			log.Printf("[ERROR]: %v", err)
+			return posts, errors.New("account doesn't exist")
+		}
 		return posts, err
 	}
 
@@ -270,6 +323,21 @@ func (r *PostPostgres) GetPostsByUserId(userId int64) ([]models.Post, error) {
 			return posts, err
 		}
 		posts[index].Images = images
+
+		categories := make([]uint8, 0, len(posts[index].Categories))
+		selectCategoriesQuery := fmt.Sprintf("SELECT category_id FROM %s WHERE post_id=$1", postsCategoriesTable)
+		err = r.db.Select(&categories, selectCategoriesQuery, posts[index].Id)
+
+		if err != nil {
+			log.Printf("[ERROR]: %v", err)
+			return posts, err
+		}
+
+		if len(categories) > 0 {
+			for _, category := range categories {
+				posts[index].Categories = append(posts[index].Categories, int64(category))
+			}
+		}
 	}
 	return posts, err
 }
