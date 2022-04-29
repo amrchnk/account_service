@@ -29,6 +29,7 @@ func (i *Implementation) CreatePost(ctx context.Context, req *pb.CreatePostReque
 
 	postId, err := i.Service.CreatePost(post)
 	if err != nil {
+		log.Printf("[ERROR]: %v", err)
 		return nil, err
 	}
 
@@ -41,6 +42,7 @@ func (i *Implementation) CreatePost(ctx context.Context, req *pb.CreatePostReque
 func (i *Implementation) GetPostById(ctx context.Context, req *pb.GetPostByIdRequest) (*pb.GetPostByIdResponse, error) {
 	resp, err := i.Service.GetPostById(req.Id)
 	if err != nil {
+		log.Printf("[ERROR]: %v", err)
 		return nil, err
 	}
 	images := make([]*pb.Image, 0, len(resp.Images))
@@ -98,6 +100,7 @@ func (i *Implementation) UpdatePostById(ctx context.Context, req *pb.UpdatePostB
 func (i *Implementation) DeletePostById(ctx context.Context, req *pb.DeletePostByIdRequest) (*pb.DeletePostByIdResponse, error) {
 	err := i.Service.DeletePostById(req.Id)
 	if err != nil {
+		log.Printf("[ERROR]: %v", err)
 		return nil, err
 	}
 	return &pb.DeletePostByIdResponse{

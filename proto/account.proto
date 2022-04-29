@@ -27,6 +27,9 @@ service AccountService {
   rpc UpdatePostById (UpdatePostByIdRequest) returns (UpdatePostByIdResponse){}
 
   rpc GetPostsByUserId (GetUserPostsRequest) returns (GetUserPostsResponse){}
+
+  //IMAGES
+  rpc GetImagesFromPost(GetImagesFromPostRequest) returns (GetImagesFromPostResponse){}
 }
 
 message CreateAccountRequest{
@@ -110,6 +113,16 @@ message UpdatePostByIdRequest{
 message UpdatePostByIdResponse{
   string message = 1;
 }
+
+//IMAGES
+message GetImagesFromPostRequest{
+  int64 post_id = 1;
+}
+
+message GetImagesFromPostResponse{
+  repeated Image images = 1;
+}
+
 
 message Post {
   int64 id = 1;

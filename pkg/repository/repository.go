@@ -20,14 +20,20 @@ type Post interface {
 	UpdatePostByd(post models.Post) (string, error)
 }
 
+type Images interface {
+	GetImagesFromPost(postId int64) ([]models.Image, error)
+}
+
 type Repository struct {
 	Account
 	Post
+	Images
 }
 
 func NewRepository(db *sqlx.DB) *Repository {
 	return &Repository{
 		Account: NewAccountPostgres(db),
 		Post:    NewPostPostgres(db),
+		Images:  NewImagesPostgres(db),
 	}
 }

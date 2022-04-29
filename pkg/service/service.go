@@ -20,14 +20,20 @@ type Post interface {
 	GetPostsByUserId(userId int64) ([]models.Post, error)
 }
 
+type Images interface {
+	GetImagesFromPost(postId int64) ([]models.Image, error)
+}
+
 type Service struct {
 	Account
 	Post
+	Images
 }
 
 func NewService(repos *repository.Repository) *Service {
 	return &Service{
 		Account: NewAccountService(repos.Account),
 		Post:    NewPostService(repos.Post),
+		Images:  NewImagesService(repos.Images),
 	}
 }

@@ -33,6 +33,8 @@ type AccountServiceClient interface {
 	GetPostById(ctx context.Context, in *GetPostByIdRequest, opts ...grpc.CallOption) (*GetPostByIdResponse, error)
 	UpdatePostById(ctx context.Context, in *UpdatePostByIdRequest, opts ...grpc.CallOption) (*UpdatePostByIdResponse, error)
 	GetPostsByUserId(ctx context.Context, in *GetUserPostsRequest, opts ...grpc.CallOption) (*GetUserPostsResponse, error)
+	//IMAGES
+	GetImagesFromPost(ctx context.Context, in *GetImagesFromPostRequest, opts ...grpc.CallOption) (*GetImagesFromPostResponse, error)
 }
 
 type accountServiceClient struct {
@@ -124,6 +126,15 @@ func (c *accountServiceClient) GetPostsByUserId(ctx context.Context, in *GetUser
 	return out, nil
 }
 
+func (c *accountServiceClient) GetImagesFromPost(ctx context.Context, in *GetImagesFromPostRequest, opts ...grpc.CallOption) (*GetImagesFromPostResponse, error) {
+	out := new(GetImagesFromPostResponse)
+	err := c.cc.Invoke(ctx, "/protobuf.AccountService/GetImagesFromPost", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // AccountServiceServer is the server API for AccountService service.
 // All implementations must embed UnimplementedAccountServiceServer
 // for forward compatibility
@@ -139,6 +150,8 @@ type AccountServiceServer interface {
 	GetPostById(context.Context, *GetPostByIdRequest) (*GetPostByIdResponse, error)
 	UpdatePostById(context.Context, *UpdatePostByIdRequest) (*UpdatePostByIdResponse, error)
 	GetPostsByUserId(context.Context, *GetUserPostsRequest) (*GetUserPostsResponse, error)
+	//IMAGES
+	GetImagesFromPost(context.Context, *GetImagesFromPostRequest) (*GetImagesFromPostResponse, error)
 	mustEmbedUnimplementedAccountServiceServer()
 }
 
@@ -172,6 +185,9 @@ func (UnimplementedAccountServiceServer) UpdatePostById(context.Context, *Update
 }
 func (UnimplementedAccountServiceServer) GetPostsByUserId(context.Context, *GetUserPostsRequest) (*GetUserPostsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetPostsByUserId not implemented")
+}
+func (UnimplementedAccountServiceServer) GetImagesFromPost(context.Context, *GetImagesFromPostRequest) (*GetImagesFromPostResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetImagesFromPost not implemented")
 }
 func (UnimplementedAccountServiceServer) mustEmbedUnimplementedAccountServiceServer() {}
 
@@ -348,6 +364,24 @@ func _AccountService_GetPostsByUserId_Handler(srv interface{}, ctx context.Conte
 	return interceptor(ctx, in, info, handler)
 }
 
+func _AccountService_GetImagesFromPost_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetImagesFromPostRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AccountServiceServer).GetImagesFromPost(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/protobuf.AccountService/GetImagesFromPost",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AccountServiceServer).GetImagesFromPost(ctx, req.(*GetImagesFromPostRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // AccountService_ServiceDesc is the grpc.ServiceDesc for AccountService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -390,6 +424,10 @@ var AccountService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetPostsByUserId",
 			Handler:    _AccountService_GetPostsByUserId_Handler,
+		},
+		{
+			MethodName: "GetImagesFromPost",
+			Handler:    _AccountService_GetImagesFromPost_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
