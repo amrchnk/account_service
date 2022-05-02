@@ -57,7 +57,17 @@ func (r *PostPostgres) CreatePost(post models.Post) (int64, error) {
 		return 0, fmt.Errorf("error while adding images: %v", err)
 	}
 
-	if len(post.Categories) > 0 {
+	if len(post.Categories) == 0 {
+		createPostCategoriesQuery := fmt.Sprintf("INSERT INTO %s (category_id, post_id) VALUES ", postsCategoriesTable)
+		createPostCategoriesQuery += fmt.Sprintf("('%d',%d)", 1, postId)
+
+		_, err = tx.Exec(createPostCategoriesQuery)
+		if err != nil {
+			log.Printf("[ERROR]: %v", err)
+			tx.Rollback()
+			return 0, fmt.Errorf("error while adding categories to post: %v", err)
+		}
+	} else {
 		createPostCategoriesQuery := fmt.Sprintf("INSERT INTO %s (category_id, post_id) VALUES ", postsCategoriesTable)
 		var inserts []string
 		for _, category := range post.Categories {
@@ -73,15 +83,6 @@ func (r *PostPostgres) CreatePost(post models.Post) (int64, error) {
 			tx.Rollback()
 			return 0, fmt.Errorf("error while adding categories to post: %v", err)
 		}
-	}
-	createPostCategoriesQuery := fmt.Sprintf("INSERT INTO %s (category_id, post_id) VALUES ", postsCategoriesTable)
-	createPostCategoriesQuery += fmt.Sprintf("('%d',%d)", 1, postId)
-
-	_, err = tx.Exec(createPostCategoriesQuery)
-	if err != nil {
-		log.Printf("[ERROR]: %v", err)
-		tx.Rollback()
-		return 0, fmt.Errorf("error while adding categories to post: %v", err)
 	}
 
 	return postId, tx.Commit()
