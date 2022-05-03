@@ -33,6 +33,7 @@ type AccountServiceClient interface {
 	GetPostById(ctx context.Context, in *GetPostByIdRequest, opts ...grpc.CallOption) (*GetPostByIdResponse, error)
 	UpdatePostById(ctx context.Context, in *UpdatePostByIdRequest, opts ...grpc.CallOption) (*UpdatePostByIdResponse, error)
 	GetPostsByUserId(ctx context.Context, in *GetUserPostsRequest, opts ...grpc.CallOption) (*GetUserPostsResponse, error)
+	GetAllUsersPosts(ctx context.Context, in *GetAllUsersPostsRequest, opts ...grpc.CallOption) (*GetAllUsersPostsResponse, error)
 	//IMAGES
 	GetImagesFromPost(ctx context.Context, in *GetImagesFromPostRequest, opts ...grpc.CallOption) (*GetImagesFromPostResponse, error)
 }
@@ -126,6 +127,15 @@ func (c *accountServiceClient) GetPostsByUserId(ctx context.Context, in *GetUser
 	return out, nil
 }
 
+func (c *accountServiceClient) GetAllUsersPosts(ctx context.Context, in *GetAllUsersPostsRequest, opts ...grpc.CallOption) (*GetAllUsersPostsResponse, error) {
+	out := new(GetAllUsersPostsResponse)
+	err := c.cc.Invoke(ctx, "/protobuf.AccountService/GetAllUsersPosts", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *accountServiceClient) GetImagesFromPost(ctx context.Context, in *GetImagesFromPostRequest, opts ...grpc.CallOption) (*GetImagesFromPostResponse, error) {
 	out := new(GetImagesFromPostResponse)
 	err := c.cc.Invoke(ctx, "/protobuf.AccountService/GetImagesFromPost", in, out, opts...)
@@ -150,6 +160,7 @@ type AccountServiceServer interface {
 	GetPostById(context.Context, *GetPostByIdRequest) (*GetPostByIdResponse, error)
 	UpdatePostById(context.Context, *UpdatePostByIdRequest) (*UpdatePostByIdResponse, error)
 	GetPostsByUserId(context.Context, *GetUserPostsRequest) (*GetUserPostsResponse, error)
+	GetAllUsersPosts(context.Context, *GetAllUsersPostsRequest) (*GetAllUsersPostsResponse, error)
 	//IMAGES
 	GetImagesFromPost(context.Context, *GetImagesFromPostRequest) (*GetImagesFromPostResponse, error)
 	mustEmbedUnimplementedAccountServiceServer()
@@ -185,6 +196,9 @@ func (UnimplementedAccountServiceServer) UpdatePostById(context.Context, *Update
 }
 func (UnimplementedAccountServiceServer) GetPostsByUserId(context.Context, *GetUserPostsRequest) (*GetUserPostsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetPostsByUserId not implemented")
+}
+func (UnimplementedAccountServiceServer) GetAllUsersPosts(context.Context, *GetAllUsersPostsRequest) (*GetAllUsersPostsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetAllUsersPosts not implemented")
 }
 func (UnimplementedAccountServiceServer) GetImagesFromPost(context.Context, *GetImagesFromPostRequest) (*GetImagesFromPostResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetImagesFromPost not implemented")
@@ -364,6 +378,24 @@ func _AccountService_GetPostsByUserId_Handler(srv interface{}, ctx context.Conte
 	return interceptor(ctx, in, info, handler)
 }
 
+func _AccountService_GetAllUsersPosts_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetAllUsersPostsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AccountServiceServer).GetAllUsersPosts(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/protobuf.AccountService/GetAllUsersPosts",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AccountServiceServer).GetAllUsersPosts(ctx, req.(*GetAllUsersPostsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _AccountService_GetImagesFromPost_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(GetImagesFromPostRequest)
 	if err := dec(in); err != nil {
@@ -424,6 +456,10 @@ var AccountService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetPostsByUserId",
 			Handler:    _AccountService_GetPostsByUserId_Handler,
+		},
+		{
+			MethodName: "GetAllUsersPosts",
+			Handler:    _AccountService_GetAllUsersPosts_Handler,
 		},
 		{
 			MethodName: "GetImagesFromPost",

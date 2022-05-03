@@ -342,3 +342,44 @@ func (r *PostPostgres) GetPostsByUserId(userId int64) ([]models.Post, error) {
 	}
 	return posts, err
 }
+
+func (r *PostPostgres) GetAllUsersPosts(offset, limit int64, sorting string) ([]models.GetAllUsersPosts, error) {
+	mu.Lock()
+	defer mu.Unlock()
+
+	var posts []models.GetAllUsersPosts
+
+	selectPostsQuery := fmt.Sprintf("SELECT p.id as id, p.title as title, p.description as description, p.created_at as created_at, ac.user_id as user_id FROM %s p INNER JOIN %s ac ON p.account_id=ac.id", postTable, accountsTable)
+	switch sorting {
+	case "asc":
+		selectPostsQuery += fmt.Sprintf(" ORDER BY p.created_at")
+	default:
+		selectPostsQuery += fmt.Sprintf(" ORDER BY p.created_at DESC")
+	}
+
+	selectPostsQuery += fmt.Sprintf(" OFFSET %d LIMIT %d", offset, limit)
+
+	err := r.db.Select(&posts, selectPostsQuery)
+	if err != nil {
+		log.Printf("[ERROR]: %v", err)
+		return nil, err
+	}
+
+	for index := range posts {
+		selectImagesQuery := fmt.Sprintf("SELECT link as image FROM %s where post_id=$1", imageTable)
+		err := r.db.Select(&posts[index].Images, selectImagesQuery, posts[index].Id)
+		if err != nil {
+			log.Printf("[ERROR]: %v", err)
+			return nil, err
+		}
+
+		selectCategoriesQuery := fmt.Sprintf("SELECT c.title as category FROM category c INNER JOIN posts_have_categories phc ON c.id=phc.category_id INNER JOIN post p ON p.id=phc.post_id WHERE p.id=$1")
+		err = r.db.Select(&posts[index].Categories, selectCategoriesQuery, posts[index].Id)
+		if err != nil {
+			log.Printf("[ERROR]: %v", err)
+			return nil, err
+		}
+	}
+
+	return posts, nil
+}

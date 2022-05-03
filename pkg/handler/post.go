@@ -145,3 +145,30 @@ func (i *Implementation) GetPostsByUserId(ctx context.Context, req *pb.GetUserPo
 		Posts:  postsResp,
 	}, err
 }
+
+func (i *Implementation) GetAllUsersPosts(ctx context.Context, req *pb.GetAllUsersPostsRequest) (*pb.GetAllUsersPostsResponse, error) {
+	posts, err := i.Service.GetAllUsersPosts(req.Offset, req.Limit, req.Sorting)
+	if err != nil {
+		log.Printf("[ERROR]: %v", err)
+		return nil, err
+	}
+
+	postsResp := make([]*pb.GetAllUsersPostsResponse_Post, 0, len(posts))
+	if len(posts) > 0 {
+		for _, post := range posts {
+			postsResp = append(postsResp, &pb.GetAllUsersPostsResponse_Post{
+				Id:          post.Id,
+				Title:       post.Title,
+				Description: post.Description,
+				CreatedAt:   post.CreatedAt.Format("2006-01-02 15:04:05"),
+				Images:      post.Images,
+				Categories:  post.Categories,
+				UserId:      post.UserId,
+			})
+		}
+	}
+
+	return &pb.GetAllUsersPostsResponse{
+		Posts: postsResp,
+	}, nil
+}

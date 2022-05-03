@@ -18,6 +18,7 @@ type Post interface {
 	GetPostById(postId int64) (models.Post, error)
 	GetPostsByUserId(userId int64) ([]models.Post, error)
 	UpdatePostByd(post models.Post) (string, error)
+	GetAllUsersPosts(offset, limit int64, sorting string) ([]models.GetAllUsersPosts, error)
 }
 
 type Images interface {

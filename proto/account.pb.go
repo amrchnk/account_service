@@ -946,6 +946,116 @@ func (x *UpdatePostByIdResponse) GetMessage() string {
 	return ""
 }
 
+type GetAllUsersPostsRequest struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Offset  int64  `protobuf:"varint,1,opt,name=offset,proto3" json:"offset,omitempty"`
+	Limit   int64  `protobuf:"varint,2,opt,name=limit,proto3" json:"limit,omitempty"`
+	Sorting string `protobuf:"bytes,3,opt,name=sorting,proto3" json:"sorting,omitempty"`
+}
+
+func (x *GetAllUsersPostsRequest) Reset() {
+	*x = GetAllUsersPostsRequest{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_account_proto_msgTypes[19]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *GetAllUsersPostsRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetAllUsersPostsRequest) ProtoMessage() {}
+
+func (x *GetAllUsersPostsRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_account_proto_msgTypes[19]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetAllUsersPostsRequest.ProtoReflect.Descriptor instead.
+func (*GetAllUsersPostsRequest) Descriptor() ([]byte, []int) {
+	return file_account_proto_rawDescGZIP(), []int{19}
+}
+
+func (x *GetAllUsersPostsRequest) GetOffset() int64 {
+	if x != nil {
+		return x.Offset
+	}
+	return 0
+}
+
+func (x *GetAllUsersPostsRequest) GetLimit() int64 {
+	if x != nil {
+		return x.Limit
+	}
+	return 0
+}
+
+func (x *GetAllUsersPostsRequest) GetSorting() string {
+	if x != nil {
+		return x.Sorting
+	}
+	return ""
+}
+
+type GetAllUsersPostsResponse struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Posts []*GetAllUsersPostsResponse_Post `protobuf:"bytes,1,rep,name=posts,proto3" json:"posts,omitempty"`
+}
+
+func (x *GetAllUsersPostsResponse) Reset() {
+	*x = GetAllUsersPostsResponse{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_account_proto_msgTypes[20]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *GetAllUsersPostsResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetAllUsersPostsResponse) ProtoMessage() {}
+
+func (x *GetAllUsersPostsResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_account_proto_msgTypes[20]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetAllUsersPostsResponse.ProtoReflect.Descriptor instead.
+func (*GetAllUsersPostsResponse) Descriptor() ([]byte, []int) {
+	return file_account_proto_rawDescGZIP(), []int{20}
+}
+
+func (x *GetAllUsersPostsResponse) GetPosts() []*GetAllUsersPostsResponse_Post {
+	if x != nil {
+		return x.Posts
+	}
+	return nil
+}
+
 //IMAGES
 type GetImagesFromPostRequest struct {
 	state         protoimpl.MessageState
@@ -958,7 +1068,7 @@ type GetImagesFromPostRequest struct {
 func (x *GetImagesFromPostRequest) Reset() {
 	*x = GetImagesFromPostRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_account_proto_msgTypes[19]
+		mi := &file_account_proto_msgTypes[21]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -971,7 +1081,7 @@ func (x *GetImagesFromPostRequest) String() string {
 func (*GetImagesFromPostRequest) ProtoMessage() {}
 
 func (x *GetImagesFromPostRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_account_proto_msgTypes[19]
+	mi := &file_account_proto_msgTypes[21]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -984,7 +1094,7 @@ func (x *GetImagesFromPostRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetImagesFromPostRequest.ProtoReflect.Descriptor instead.
 func (*GetImagesFromPostRequest) Descriptor() ([]byte, []int) {
-	return file_account_proto_rawDescGZIP(), []int{19}
+	return file_account_proto_rawDescGZIP(), []int{21}
 }
 
 func (x *GetImagesFromPostRequest) GetPostId() int64 {
@@ -1005,7 +1115,7 @@ type GetImagesFromPostResponse struct {
 func (x *GetImagesFromPostResponse) Reset() {
 	*x = GetImagesFromPostResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_account_proto_msgTypes[20]
+		mi := &file_account_proto_msgTypes[22]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1018,7 +1128,7 @@ func (x *GetImagesFromPostResponse) String() string {
 func (*GetImagesFromPostResponse) ProtoMessage() {}
 
 func (x *GetImagesFromPostResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_account_proto_msgTypes[20]
+	mi := &file_account_proto_msgTypes[22]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1031,7 +1141,7 @@ func (x *GetImagesFromPostResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetImagesFromPostResponse.ProtoReflect.Descriptor instead.
 func (*GetImagesFromPostResponse) Descriptor() ([]byte, []int) {
-	return file_account_proto_rawDescGZIP(), []int{20}
+	return file_account_proto_rawDescGZIP(), []int{22}
 }
 
 func (x *GetImagesFromPostResponse) GetImages() []*Image {
@@ -1059,7 +1169,7 @@ type Post struct {
 func (x *Post) Reset() {
 	*x = Post{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_account_proto_msgTypes[21]
+		mi := &file_account_proto_msgTypes[23]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1072,7 +1182,7 @@ func (x *Post) String() string {
 func (*Post) ProtoMessage() {}
 
 func (x *Post) ProtoReflect() protoreflect.Message {
-	mi := &file_account_proto_msgTypes[21]
+	mi := &file_account_proto_msgTypes[23]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1085,7 +1195,7 @@ func (x *Post) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Post.ProtoReflect.Descriptor instead.
 func (*Post) Descriptor() ([]byte, []int) {
-	return file_account_proto_rawDescGZIP(), []int{21}
+	return file_account_proto_rawDescGZIP(), []int{23}
 }
 
 func (x *Post) GetId() int64 {
@@ -1157,7 +1267,7 @@ type Image struct {
 func (x *Image) Reset() {
 	*x = Image{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_account_proto_msgTypes[22]
+		mi := &file_account_proto_msgTypes[24]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1170,7 +1280,7 @@ func (x *Image) String() string {
 func (*Image) ProtoMessage() {}
 
 func (x *Image) ProtoReflect() protoreflect.Message {
-	mi := &file_account_proto_msgTypes[22]
+	mi := &file_account_proto_msgTypes[24]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1183,7 +1293,7 @@ func (x *Image) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Image.ProtoReflect.Descriptor instead.
 func (*Image) Descriptor() ([]byte, []int) {
-	return file_account_proto_rawDescGZIP(), []int{22}
+	return file_account_proto_rawDescGZIP(), []int{24}
 }
 
 func (x *Image) GetId() int64 {
@@ -1203,6 +1313,101 @@ func (x *Image) GetLink() string {
 func (x *Image) GetPostId() int64 {
 	if x != nil {
 		return x.PostId
+	}
+	return 0
+}
+
+type GetAllUsersPostsResponse_Post struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Id          int64    `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
+	Title       string   `protobuf:"bytes,2,opt,name=title,proto3" json:"title,omitempty"`
+	Description string   `protobuf:"bytes,3,opt,name=description,proto3" json:"description,omitempty"`
+	CreatedAt   string   `protobuf:"bytes,4,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
+	Images      []string `protobuf:"bytes,6,rep,name=images,proto3" json:"images,omitempty"`
+	Categories  []string `protobuf:"bytes,7,rep,name=categories,proto3" json:"categories,omitempty"`
+	UserId      int64    `protobuf:"varint,8,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
+}
+
+func (x *GetAllUsersPostsResponse_Post) Reset() {
+	*x = GetAllUsersPostsResponse_Post{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_account_proto_msgTypes[25]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *GetAllUsersPostsResponse_Post) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetAllUsersPostsResponse_Post) ProtoMessage() {}
+
+func (x *GetAllUsersPostsResponse_Post) ProtoReflect() protoreflect.Message {
+	mi := &file_account_proto_msgTypes[25]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetAllUsersPostsResponse_Post.ProtoReflect.Descriptor instead.
+func (*GetAllUsersPostsResponse_Post) Descriptor() ([]byte, []int) {
+	return file_account_proto_rawDescGZIP(), []int{20, 0}
+}
+
+func (x *GetAllUsersPostsResponse_Post) GetId() int64 {
+	if x != nil {
+		return x.Id
+	}
+	return 0
+}
+
+func (x *GetAllUsersPostsResponse_Post) GetTitle() string {
+	if x != nil {
+		return x.Title
+	}
+	return ""
+}
+
+func (x *GetAllUsersPostsResponse_Post) GetDescription() string {
+	if x != nil {
+		return x.Description
+	}
+	return ""
+}
+
+func (x *GetAllUsersPostsResponse_Post) GetCreatedAt() string {
+	if x != nil {
+		return x.CreatedAt
+	}
+	return ""
+}
+
+func (x *GetAllUsersPostsResponse_Post) GetImages() []string {
+	if x != nil {
+		return x.Images
+	}
+	return nil
+}
+
+func (x *GetAllUsersPostsResponse_Post) GetCategories() []string {
+	if x != nil {
+		return x.Categories
+	}
+	return nil
+}
+
+func (x *GetAllUsersPostsResponse_Post) GetUserId() int64 {
+	if x != nil {
+		return x.UserId
 	}
 	return 0
 }
@@ -1284,7 +1489,31 @@ var file_account_proto_rawDesc = []byte{
 	0x50, 0x6f, 0x73, 0x74, 0x52, 0x04, 0x70, 0x6f, 0x73, 0x74, 0x22, 0x32, 0x0a, 0x16, 0x55, 0x70,
 	0x64, 0x61, 0x74, 0x65, 0x50, 0x6f, 0x73, 0x74, 0x42, 0x79, 0x49, 0x64, 0x52, 0x65, 0x73, 0x70,
 	0x6f, 0x6e, 0x73, 0x65, 0x12, 0x18, 0x0a, 0x07, 0x6d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x18,
-	0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x07, 0x6d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x22, 0x33,
+	0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x07, 0x6d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x22, 0x61,
+	0x0a, 0x17, 0x47, 0x65, 0x74, 0x41, 0x6c, 0x6c, 0x55, 0x73, 0x65, 0x72, 0x73, 0x50, 0x6f, 0x73,
+	0x74, 0x73, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x16, 0x0a, 0x06, 0x6f, 0x66, 0x66,
+	0x73, 0x65, 0x74, 0x18, 0x01, 0x20, 0x01, 0x28, 0x03, 0x52, 0x06, 0x6f, 0x66, 0x66, 0x73, 0x65,
+	0x74, 0x12, 0x14, 0x0a, 0x05, 0x6c, 0x69, 0x6d, 0x69, 0x74, 0x18, 0x02, 0x20, 0x01, 0x28, 0x03,
+	0x52, 0x05, 0x6c, 0x69, 0x6d, 0x69, 0x74, 0x12, 0x18, 0x0a, 0x07, 0x73, 0x6f, 0x72, 0x74, 0x69,
+	0x6e, 0x67, 0x18, 0x03, 0x20, 0x01, 0x28, 0x09, 0x52, 0x07, 0x73, 0x6f, 0x72, 0x74, 0x69, 0x6e,
+	0x67, 0x22, 0x9a, 0x02, 0x0a, 0x18, 0x47, 0x65, 0x74, 0x41, 0x6c, 0x6c, 0x55, 0x73, 0x65, 0x72,
+	0x73, 0x50, 0x6f, 0x73, 0x74, 0x73, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x3d,
+	0x0a, 0x05, 0x70, 0x6f, 0x73, 0x74, 0x73, 0x18, 0x01, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x27, 0x2e,
+	0x70, 0x72, 0x6f, 0x74, 0x6f, 0x62, 0x75, 0x66, 0x2e, 0x47, 0x65, 0x74, 0x41, 0x6c, 0x6c, 0x55,
+	0x73, 0x65, 0x72, 0x73, 0x50, 0x6f, 0x73, 0x74, 0x73, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73,
+	0x65, 0x2e, 0x50, 0x6f, 0x73, 0x74, 0x52, 0x05, 0x70, 0x6f, 0x73, 0x74, 0x73, 0x1a, 0xbe, 0x01,
+	0x0a, 0x04, 0x50, 0x6f, 0x73, 0x74, 0x12, 0x0e, 0x0a, 0x02, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01,
+	0x28, 0x03, 0x52, 0x02, 0x69, 0x64, 0x12, 0x14, 0x0a, 0x05, 0x74, 0x69, 0x74, 0x6c, 0x65, 0x18,
+	0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x05, 0x74, 0x69, 0x74, 0x6c, 0x65, 0x12, 0x20, 0x0a, 0x0b,
+	0x64, 0x65, 0x73, 0x63, 0x72, 0x69, 0x70, 0x74, 0x69, 0x6f, 0x6e, 0x18, 0x03, 0x20, 0x01, 0x28,
+	0x09, 0x52, 0x0b, 0x64, 0x65, 0x73, 0x63, 0x72, 0x69, 0x70, 0x74, 0x69, 0x6f, 0x6e, 0x12, 0x1d,
+	0x0a, 0x0a, 0x63, 0x72, 0x65, 0x61, 0x74, 0x65, 0x64, 0x5f, 0x61, 0x74, 0x18, 0x04, 0x20, 0x01,
+	0x28, 0x09, 0x52, 0x09, 0x63, 0x72, 0x65, 0x61, 0x74, 0x65, 0x64, 0x41, 0x74, 0x12, 0x16, 0x0a,
+	0x06, 0x69, 0x6d, 0x61, 0x67, 0x65, 0x73, 0x18, 0x06, 0x20, 0x03, 0x28, 0x09, 0x52, 0x06, 0x69,
+	0x6d, 0x61, 0x67, 0x65, 0x73, 0x12, 0x1e, 0x0a, 0x0a, 0x63, 0x61, 0x74, 0x65, 0x67, 0x6f, 0x72,
+	0x69, 0x65, 0x73, 0x18, 0x07, 0x20, 0x03, 0x28, 0x09, 0x52, 0x0a, 0x63, 0x61, 0x74, 0x65, 0x67,
+	0x6f, 0x72, 0x69, 0x65, 0x73, 0x12, 0x17, 0x0a, 0x07, 0x75, 0x73, 0x65, 0x72, 0x5f, 0x69, 0x64,
+	0x18, 0x08, 0x20, 0x01, 0x28, 0x03, 0x52, 0x06, 0x75, 0x73, 0x65, 0x72, 0x49, 0x64, 0x22, 0x33,
 	0x0a, 0x18, 0x47, 0x65, 0x74, 0x49, 0x6d, 0x61, 0x67, 0x65, 0x73, 0x46, 0x72, 0x6f, 0x6d, 0x50,
 	0x6f, 0x73, 0x74, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x17, 0x0a, 0x07, 0x70, 0x6f,
 	0x73, 0x74, 0x5f, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x03, 0x52, 0x06, 0x70, 0x6f, 0x73,
@@ -1312,7 +1541,7 @@ var file_account_proto_rawDesc = []byte{
 	0x01, 0x20, 0x01, 0x28, 0x03, 0x52, 0x02, 0x69, 0x64, 0x12, 0x12, 0x0a, 0x04, 0x6c, 0x69, 0x6e,
 	0x6b, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x04, 0x6c, 0x69, 0x6e, 0x6b, 0x12, 0x17, 0x0a,
 	0x07, 0x70, 0x6f, 0x73, 0x74, 0x5f, 0x69, 0x64, 0x18, 0x03, 0x20, 0x01, 0x28, 0x03, 0x52, 0x06,
-	0x70, 0x6f, 0x73, 0x74, 0x49, 0x64, 0x32, 0xa3, 0x07, 0x0a, 0x0e, 0x41, 0x63, 0x63, 0x6f, 0x75,
+	0x70, 0x6f, 0x73, 0x74, 0x49, 0x64, 0x32, 0x80, 0x08, 0x0a, 0x0e, 0x41, 0x63, 0x63, 0x6f, 0x75,
 	0x6e, 0x74, 0x53, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65, 0x12, 0x5a, 0x0a, 0x15, 0x43, 0x72, 0x65,
 	0x61, 0x74, 0x65, 0x41, 0x63, 0x63, 0x6f, 0x75, 0x6e, 0x74, 0x42, 0x79, 0x55, 0x73, 0x65, 0x72,
 	0x49, 0x64, 0x12, 0x1e, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x62, 0x75, 0x66, 0x2e, 0x43, 0x72,
@@ -1364,14 +1593,20 @@ var file_account_proto_rawDesc = []byte{
 	0x6f, 0x74, 0x6f, 0x62, 0x75, 0x66, 0x2e, 0x47, 0x65, 0x74, 0x55, 0x73, 0x65, 0x72, 0x50, 0x6f,
 	0x73, 0x74, 0x73, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x1e, 0x2e, 0x70, 0x72, 0x6f,
 	0x74, 0x6f, 0x62, 0x75, 0x66, 0x2e, 0x47, 0x65, 0x74, 0x55, 0x73, 0x65, 0x72, 0x50, 0x6f, 0x73,
-	0x74, 0x73, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x00, 0x12, 0x5e, 0x0a, 0x11,
-	0x47, 0x65, 0x74, 0x49, 0x6d, 0x61, 0x67, 0x65, 0x73, 0x46, 0x72, 0x6f, 0x6d, 0x50, 0x6f, 0x73,
-	0x74, 0x12, 0x22, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x62, 0x75, 0x66, 0x2e, 0x47, 0x65, 0x74,
-	0x49, 0x6d, 0x61, 0x67, 0x65, 0x73, 0x46, 0x72, 0x6f, 0x6d, 0x50, 0x6f, 0x73, 0x74, 0x52, 0x65,
-	0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x23, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x62, 0x75, 0x66,
-	0x2e, 0x47, 0x65, 0x74, 0x49, 0x6d, 0x61, 0x67, 0x65, 0x73, 0x46, 0x72, 0x6f, 0x6d, 0x50, 0x6f,
-	0x73, 0x74, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x00, 0x42, 0x08, 0x5a, 0x06,
-	0x2f, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
+	0x74, 0x73, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x00, 0x12, 0x5b, 0x0a, 0x10,
+	0x47, 0x65, 0x74, 0x41, 0x6c, 0x6c, 0x55, 0x73, 0x65, 0x72, 0x73, 0x50, 0x6f, 0x73, 0x74, 0x73,
+	0x12, 0x21, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x62, 0x75, 0x66, 0x2e, 0x47, 0x65, 0x74, 0x41,
+	0x6c, 0x6c, 0x55, 0x73, 0x65, 0x72, 0x73, 0x50, 0x6f, 0x73, 0x74, 0x73, 0x52, 0x65, 0x71, 0x75,
+	0x65, 0x73, 0x74, 0x1a, 0x22, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x62, 0x75, 0x66, 0x2e, 0x47,
+	0x65, 0x74, 0x41, 0x6c, 0x6c, 0x55, 0x73, 0x65, 0x72, 0x73, 0x50, 0x6f, 0x73, 0x74, 0x73, 0x52,
+	0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x00, 0x12, 0x5e, 0x0a, 0x11, 0x47, 0x65, 0x74,
+	0x49, 0x6d, 0x61, 0x67, 0x65, 0x73, 0x46, 0x72, 0x6f, 0x6d, 0x50, 0x6f, 0x73, 0x74, 0x12, 0x22,
+	0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x62, 0x75, 0x66, 0x2e, 0x47, 0x65, 0x74, 0x49, 0x6d, 0x61,
+	0x67, 0x65, 0x73, 0x46, 0x72, 0x6f, 0x6d, 0x50, 0x6f, 0x73, 0x74, 0x52, 0x65, 0x71, 0x75, 0x65,
+	0x73, 0x74, 0x1a, 0x23, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x62, 0x75, 0x66, 0x2e, 0x47, 0x65,
+	0x74, 0x49, 0x6d, 0x61, 0x67, 0x65, 0x73, 0x46, 0x72, 0x6f, 0x6d, 0x50, 0x6f, 0x73, 0x74, 0x52,
+	0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x00, 0x42, 0x08, 0x5a, 0x06, 0x2f, 0x70, 0x72,
+	0x6f, 0x74, 0x6f, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (
@@ -1386,7 +1621,7 @@ func file_account_proto_rawDescGZIP() []byte {
 	return file_account_proto_rawDescData
 }
 
-var file_account_proto_msgTypes = make([]protoimpl.MessageInfo, 23)
+var file_account_proto_msgTypes = make([]protoimpl.MessageInfo, 26)
 var file_account_proto_goTypes = []interface{}{
 	(*CreateAccountRequest)(nil),          // 0: protobuf.CreateAccountRequest
 	(*CreateAccountResponse)(nil),         // 1: protobuf.CreateAccountResponse
@@ -1407,45 +1642,51 @@ var file_account_proto_goTypes = []interface{}{
 	(*GetUserPostsResponse)(nil),          // 16: protobuf.GetUserPostsResponse
 	(*UpdatePostByIdRequest)(nil),         // 17: protobuf.UpdatePostByIdRequest
 	(*UpdatePostByIdResponse)(nil),        // 18: protobuf.UpdatePostByIdResponse
-	(*GetImagesFromPostRequest)(nil),      // 19: protobuf.GetImagesFromPostRequest
-	(*GetImagesFromPostResponse)(nil),     // 20: protobuf.GetImagesFromPostResponse
-	(*Post)(nil),                          // 21: protobuf.Post
-	(*Image)(nil),                         // 22: protobuf.Image
+	(*GetAllUsersPostsRequest)(nil),       // 19: protobuf.GetAllUsersPostsRequest
+	(*GetAllUsersPostsResponse)(nil),      // 20: protobuf.GetAllUsersPostsResponse
+	(*GetImagesFromPostRequest)(nil),      // 21: protobuf.GetImagesFromPostRequest
+	(*GetImagesFromPostResponse)(nil),     // 22: protobuf.GetImagesFromPostResponse
+	(*Post)(nil),                          // 23: protobuf.Post
+	(*Image)(nil),                         // 24: protobuf.Image
+	(*GetAllUsersPostsResponse_Post)(nil), // 25: protobuf.GetAllUsersPostsResponse.Post
 }
 var file_account_proto_depIdxs = []int32{
 	8,  // 0: protobuf.GetAccountByUserIdResponse.account:type_name -> protobuf.Account
 	8,  // 1: protobuf.UpdateAccountByUserIdRequest.new_info:type_name -> protobuf.Account
-	21, // 2: protobuf.CreatePostRequest.post:type_name -> protobuf.Post
-	21, // 3: protobuf.GetPostByIdResponse.post:type_name -> protobuf.Post
-	21, // 4: protobuf.GetUserPostsResponse.posts:type_name -> protobuf.Post
-	21, // 5: protobuf.UpdatePostByIdRequest.post:type_name -> protobuf.Post
-	22, // 6: protobuf.GetImagesFromPostResponse.images:type_name -> protobuf.Image
-	22, // 7: protobuf.Post.images:type_name -> protobuf.Image
-	0,  // 8: protobuf.AccountService.CreateAccountByUserId:input_type -> protobuf.CreateAccountRequest
-	2,  // 9: protobuf.AccountService.GetAccountByUserId:input_type -> protobuf.GetAccountByUserIdRequest
-	4,  // 10: protobuf.AccountService.DeleteAccountByUserId:input_type -> protobuf.DeleteAccountByUserIdRequest
-	6,  // 11: protobuf.AccountService.UpdateAccountByUserId:input_type -> protobuf.UpdateAccountByUserIdRequest
-	9,  // 12: protobuf.AccountService.CreatePost:input_type -> protobuf.CreatePostRequest
-	11, // 13: protobuf.AccountService.DeletePostById:input_type -> protobuf.DeletePostByIdRequest
-	13, // 14: protobuf.AccountService.GetPostById:input_type -> protobuf.GetPostByIdRequest
-	17, // 15: protobuf.AccountService.UpdatePostById:input_type -> protobuf.UpdatePostByIdRequest
-	15, // 16: protobuf.AccountService.GetPostsByUserId:input_type -> protobuf.GetUserPostsRequest
-	19, // 17: protobuf.AccountService.GetImagesFromPost:input_type -> protobuf.GetImagesFromPostRequest
-	1,  // 18: protobuf.AccountService.CreateAccountByUserId:output_type -> protobuf.CreateAccountResponse
-	3,  // 19: protobuf.AccountService.GetAccountByUserId:output_type -> protobuf.GetAccountByUserIdResponse
-	5,  // 20: protobuf.AccountService.DeleteAccountByUserId:output_type -> protobuf.DeleteAccountByUserIdResponse
-	7,  // 21: protobuf.AccountService.UpdateAccountByUserId:output_type -> protobuf.UpdateAccountByUserIdResponse
-	10, // 22: protobuf.AccountService.CreatePost:output_type -> protobuf.CreatePostResponse
-	12, // 23: protobuf.AccountService.DeletePostById:output_type -> protobuf.DeletePostByIdResponse
-	14, // 24: protobuf.AccountService.GetPostById:output_type -> protobuf.GetPostByIdResponse
-	18, // 25: protobuf.AccountService.UpdatePostById:output_type -> protobuf.UpdatePostByIdResponse
-	16, // 26: protobuf.AccountService.GetPostsByUserId:output_type -> protobuf.GetUserPostsResponse
-	20, // 27: protobuf.AccountService.GetImagesFromPost:output_type -> protobuf.GetImagesFromPostResponse
-	18, // [18:28] is the sub-list for method output_type
-	8,  // [8:18] is the sub-list for method input_type
-	8,  // [8:8] is the sub-list for extension type_name
-	8,  // [8:8] is the sub-list for extension extendee
-	0,  // [0:8] is the sub-list for field type_name
+	23, // 2: protobuf.CreatePostRequest.post:type_name -> protobuf.Post
+	23, // 3: protobuf.GetPostByIdResponse.post:type_name -> protobuf.Post
+	23, // 4: protobuf.GetUserPostsResponse.posts:type_name -> protobuf.Post
+	23, // 5: protobuf.UpdatePostByIdRequest.post:type_name -> protobuf.Post
+	25, // 6: protobuf.GetAllUsersPostsResponse.posts:type_name -> protobuf.GetAllUsersPostsResponse.Post
+	24, // 7: protobuf.GetImagesFromPostResponse.images:type_name -> protobuf.Image
+	24, // 8: protobuf.Post.images:type_name -> protobuf.Image
+	0,  // 9: protobuf.AccountService.CreateAccountByUserId:input_type -> protobuf.CreateAccountRequest
+	2,  // 10: protobuf.AccountService.GetAccountByUserId:input_type -> protobuf.GetAccountByUserIdRequest
+	4,  // 11: protobuf.AccountService.DeleteAccountByUserId:input_type -> protobuf.DeleteAccountByUserIdRequest
+	6,  // 12: protobuf.AccountService.UpdateAccountByUserId:input_type -> protobuf.UpdateAccountByUserIdRequest
+	9,  // 13: protobuf.AccountService.CreatePost:input_type -> protobuf.CreatePostRequest
+	11, // 14: protobuf.AccountService.DeletePostById:input_type -> protobuf.DeletePostByIdRequest
+	13, // 15: protobuf.AccountService.GetPostById:input_type -> protobuf.GetPostByIdRequest
+	17, // 16: protobuf.AccountService.UpdatePostById:input_type -> protobuf.UpdatePostByIdRequest
+	15, // 17: protobuf.AccountService.GetPostsByUserId:input_type -> protobuf.GetUserPostsRequest
+	19, // 18: protobuf.AccountService.GetAllUsersPosts:input_type -> protobuf.GetAllUsersPostsRequest
+	21, // 19: protobuf.AccountService.GetImagesFromPost:input_type -> protobuf.GetImagesFromPostRequest
+	1,  // 20: protobuf.AccountService.CreateAccountByUserId:output_type -> protobuf.CreateAccountResponse
+	3,  // 21: protobuf.AccountService.GetAccountByUserId:output_type -> protobuf.GetAccountByUserIdResponse
+	5,  // 22: protobuf.AccountService.DeleteAccountByUserId:output_type -> protobuf.DeleteAccountByUserIdResponse
+	7,  // 23: protobuf.AccountService.UpdateAccountByUserId:output_type -> protobuf.UpdateAccountByUserIdResponse
+	10, // 24: protobuf.AccountService.CreatePost:output_type -> protobuf.CreatePostResponse
+	12, // 25: protobuf.AccountService.DeletePostById:output_type -> protobuf.DeletePostByIdResponse
+	14, // 26: protobuf.AccountService.GetPostById:output_type -> protobuf.GetPostByIdResponse
+	18, // 27: protobuf.AccountService.UpdatePostById:output_type -> protobuf.UpdatePostByIdResponse
+	16, // 28: protobuf.AccountService.GetPostsByUserId:output_type -> protobuf.GetUserPostsResponse
+	20, // 29: protobuf.AccountService.GetAllUsersPosts:output_type -> protobuf.GetAllUsersPostsResponse
+	22, // 30: protobuf.AccountService.GetImagesFromPost:output_type -> protobuf.GetImagesFromPostResponse
+	20, // [20:31] is the sub-list for method output_type
+	9,  // [9:20] is the sub-list for method input_type
+	9,  // [9:9] is the sub-list for extension type_name
+	9,  // [9:9] is the sub-list for extension extendee
+	0,  // [0:9] is the sub-list for field type_name
 }
 
 func init() { file_account_proto_init() }
@@ -1683,7 +1924,7 @@ func file_account_proto_init() {
 			}
 		}
 		file_account_proto_msgTypes[19].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*GetImagesFromPostRequest); i {
+			switch v := v.(*GetAllUsersPostsRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -1695,7 +1936,7 @@ func file_account_proto_init() {
 			}
 		}
 		file_account_proto_msgTypes[20].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*GetImagesFromPostResponse); i {
+			switch v := v.(*GetAllUsersPostsResponse); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -1707,7 +1948,7 @@ func file_account_proto_init() {
 			}
 		}
 		file_account_proto_msgTypes[21].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*Post); i {
+			switch v := v.(*GetImagesFromPostRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -1719,7 +1960,43 @@ func file_account_proto_init() {
 			}
 		}
 		file_account_proto_msgTypes[22].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*GetImagesFromPostResponse); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_account_proto_msgTypes[23].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*Post); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_account_proto_msgTypes[24].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*Image); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_account_proto_msgTypes[25].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*GetAllUsersPostsResponse_Post); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -1737,7 +2014,7 @@ func file_account_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_account_proto_rawDesc,
 			NumEnums:      0,
-			NumMessages:   23,
+			NumMessages:   26,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
