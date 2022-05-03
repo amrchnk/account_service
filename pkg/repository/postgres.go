@@ -11,8 +11,6 @@ const (
 	postTable             = "post"
 	imageTable            = "image"
 	postsCategoriesTable = "posts_have_categories"
-
-	defaultAvatarUrl = "https://res.cloudinary.com/disfhw1xf/image/upload/v1650831308/design_app/avatars/default_uivmhy.svg"
 )
 
 type Config struct {

@@ -26,7 +26,6 @@ type AccountServiceClient interface {
 	CreateAccountByUserId(ctx context.Context, in *CreateAccountRequest, opts ...grpc.CallOption) (*CreateAccountResponse, error)
 	GetAccountByUserId(ctx context.Context, in *GetAccountByUserIdRequest, opts ...grpc.CallOption) (*GetAccountByUserIdResponse, error)
 	DeleteAccountByUserId(ctx context.Context, in *DeleteAccountByUserIdRequest, opts ...grpc.CallOption) (*DeleteAccountByUserIdResponse, error)
-	UpdateAccountByUserId(ctx context.Context, in *UpdateAccountByUserIdRequest, opts ...grpc.CallOption) (*UpdateAccountByUserIdResponse, error)
 	//POST
 	CreatePost(ctx context.Context, in *CreatePostRequest, opts ...grpc.CallOption) (*CreatePostResponse, error)
 	DeletePostById(ctx context.Context, in *DeletePostByIdRequest, opts ...grpc.CallOption) (*DeletePostByIdResponse, error)
@@ -67,15 +66,6 @@ func (c *accountServiceClient) GetAccountByUserId(ctx context.Context, in *GetAc
 func (c *accountServiceClient) DeleteAccountByUserId(ctx context.Context, in *DeleteAccountByUserIdRequest, opts ...grpc.CallOption) (*DeleteAccountByUserIdResponse, error) {
 	out := new(DeleteAccountByUserIdResponse)
 	err := c.cc.Invoke(ctx, "/protobuf.AccountService/DeleteAccountByUserId", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *accountServiceClient) UpdateAccountByUserId(ctx context.Context, in *UpdateAccountByUserIdRequest, opts ...grpc.CallOption) (*UpdateAccountByUserIdResponse, error) {
-	out := new(UpdateAccountByUserIdResponse)
-	err := c.cc.Invoke(ctx, "/protobuf.AccountService/UpdateAccountByUserId", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -153,7 +143,6 @@ type AccountServiceServer interface {
 	CreateAccountByUserId(context.Context, *CreateAccountRequest) (*CreateAccountResponse, error)
 	GetAccountByUserId(context.Context, *GetAccountByUserIdRequest) (*GetAccountByUserIdResponse, error)
 	DeleteAccountByUserId(context.Context, *DeleteAccountByUserIdRequest) (*DeleteAccountByUserIdResponse, error)
-	UpdateAccountByUserId(context.Context, *UpdateAccountByUserIdRequest) (*UpdateAccountByUserIdResponse, error)
 	//POST
 	CreatePost(context.Context, *CreatePostRequest) (*CreatePostResponse, error)
 	DeletePostById(context.Context, *DeletePostByIdRequest) (*DeletePostByIdResponse, error)
@@ -178,9 +167,6 @@ func (UnimplementedAccountServiceServer) GetAccountByUserId(context.Context, *Ge
 }
 func (UnimplementedAccountServiceServer) DeleteAccountByUserId(context.Context, *DeleteAccountByUserIdRequest) (*DeleteAccountByUserIdResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteAccountByUserId not implemented")
-}
-func (UnimplementedAccountServiceServer) UpdateAccountByUserId(context.Context, *UpdateAccountByUserIdRequest) (*UpdateAccountByUserIdResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method UpdateAccountByUserId not implemented")
 }
 func (UnimplementedAccountServiceServer) CreatePost(context.Context, *CreatePostRequest) (*CreatePostResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreatePost not implemented")
@@ -266,24 +252,6 @@ func _AccountService_DeleteAccountByUserId_Handler(srv interface{}, ctx context.
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(AccountServiceServer).DeleteAccountByUserId(ctx, req.(*DeleteAccountByUserIdRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _AccountService_UpdateAccountByUserId_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(UpdateAccountByUserIdRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(AccountServiceServer).UpdateAccountByUserId(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/protobuf.AccountService/UpdateAccountByUserId",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(AccountServiceServer).UpdateAccountByUserId(ctx, req.(*UpdateAccountByUserIdRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -432,10 +400,6 @@ var AccountService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "DeleteAccountByUserId",
 			Handler:    _AccountService_DeleteAccountByUserId_Handler,
-		},
-		{
-			MethodName: "UpdateAccountByUserId",
-			Handler:    _AccountService_UpdateAccountByUserId_Handler,
 		},
 		{
 			MethodName: "CreatePost",

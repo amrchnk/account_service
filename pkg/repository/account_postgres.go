@@ -25,8 +25,8 @@ func (r *AccountPostgres) CreateAccountByUserId(userId int64) (int64, error) {
 	mu.Lock()
 	defer mu.Unlock()
 	var id int64
-	CreateAccountQuery := fmt.Sprintf("INSERT INTO %s (user_id, created_at, profile_image) values ($1, $2, $3) RETURNING id", accountsTable)
-	row := r.db.QueryRow(CreateAccountQuery, userId, time.Now(), defaultAvatarUrl)
+	CreateAccountQuery := fmt.Sprintf("INSERT INTO %s (user_id, created_at) values ($1, $2) RETURNING id", accountsTable)
+	row := r.db.QueryRow(CreateAccountQuery, userId, time.Now())
 	err := row.Scan(&id)
 
 	if err != nil {
@@ -57,23 +57,4 @@ func (r *AccountPostgres) GetAccountByUserId(userId int64) (models.Account, erro
 		return account,errors.New("account doesn't exist")
 	}
 	return account, err
-}
-
-func (r *AccountPostgres) UpdateAccountInfo(updates models.UpdateAccountInfo) (int64, error) {
-	mu.Lock()
-	defer mu.Unlock()
-	var accountId int64
-	UpdateAccountQuery := fmt.Sprintf("UPDATE %s SET profile_image = $1 WHERE user_id = $2 RETURNING id", accountsTable)
-	row := r.db.QueryRow(UpdateAccountQuery, updates.ProfileImage, updates.UserId)
-	err := row.Scan(&accountId)
-
-	if errors.Is(err, sql.ErrNoRows){
-		log.Printf("[ERROR]: %v",err)
-		return 0,errors.New("account doesn't exist")
-	}
-
-	if err != nil {
-		return 0, err
-	}
-	return accountId, err
 }

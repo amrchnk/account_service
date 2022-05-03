@@ -4,7 +4,6 @@ CREATE TABLE IF NOT EXISTS public.account
 (
     id            SERIAL PRIMARY KEY,
     created_at    timestamp without time zone NOT NULL DEFAULT NOW(),
-    profile_image varchar(500)                not null,
     user_id       bigint                      NOT NULL UNIQUE
 );
 

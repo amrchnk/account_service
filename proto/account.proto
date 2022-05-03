@@ -14,8 +14,6 @@ service AccountService {
 
   rpc DeleteAccountByUserId (DeleteAccountByUserIdRequest) returns (DeleteAccountByUserIdResponse){}
 
-  rpc UpdateAccountByUserId (UpdateAccountByUserIdRequest) returns (UpdateAccountByUserIdResponse){}
-
 
   //POST
   rpc CreatePost (CreatePostRequest) returns (CreatePostResponse){}
@@ -55,14 +53,6 @@ message DeleteAccountByUserIdRequest{
 }
 
 message DeleteAccountByUserIdResponse{
-  string message = 1;
-}
-
-message UpdateAccountByUserIdRequest{
-  Account new_info = 1;
-}
-
-message UpdateAccountByUserIdResponse{
   string message = 1;
 }
 

@@ -9,7 +9,6 @@ type Account interface {
 	CreateAccountByUserId(userId int64) (int64, error)
 	DeleteAccountByUserId(userId int64) error
 	GetAccountByUserId(userId int64) (models.Account, error)
-	UpdateAccountInfo(info models.UpdateAccountInfo) (int64, error)
 }
 
 type Post interface {
