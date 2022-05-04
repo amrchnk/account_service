@@ -85,7 +85,7 @@ message GetPostByIdRequest{
 }
 
 message GetPostByIdResponse{
-  Post post = 1;
+  PostV2 post = 1;
 }
 
 message GetUserPostsRequest{
@@ -112,16 +112,7 @@ message GetAllUsersPostsRequest{
 }
 
 message GetAllUsersPostsResponse{
-  message Post{
-    int64 id = 1;
-    string title = 2;
-    string description = 3;
-    string created_at = 4;
-    repeated string images = 6;
-    repeated string categories = 7;
-    int64 user_id = 8;
-  }
-  repeated Post posts = 1;
+  repeated PostV2 posts = 1;
 }
 
 //IMAGES
@@ -133,6 +124,15 @@ message GetImagesFromPostResponse{
   repeated Image images = 1;
 }
 
+message PostV2{
+  int64 id = 1;
+  string title = 2;
+  string description = 3;
+  string created_at = 4;
+  repeated string images = 6;
+  repeated string categories = 7;
+  int64 user_id = 8;
+}
 
 message Post {
   int64 id = 1;

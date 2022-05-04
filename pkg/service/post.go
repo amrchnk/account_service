@@ -21,7 +21,7 @@ func (s *PostService) DeletePostById(postId int64) error {
 	return s.repo.DeletePostById(postId)
 }
 
-func (s *PostService) GetPostById(postId int64) (models.Post, error) {
+func (s *PostService) GetPostById(postId int64) (models.PostV2, error) {
 	return s.repo.GetPostById(postId)
 }
 
@@ -33,6 +33,6 @@ func (s *PostService) GetPostsByUserId(userId int64) ([]models.Post, error) {
 	return s.repo.GetPostsByUserId(userId)
 }
 
-func (s *PostService) GetAllUsersPosts(offset, limit int64, sorting string) ([]models.GetAllUsersPosts, error) {
+func (s *PostService) GetAllUsersPosts(offset, limit int64, sorting string) ([]models.PostV2, error) {
 	return s.repo.GetAllUsersPosts(offset, limit, sorting)
 }

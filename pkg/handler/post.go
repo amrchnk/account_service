@@ -45,27 +45,17 @@ func (i *Implementation) GetPostById(ctx context.Context, req *pb.GetPostByIdReq
 		log.Printf("[ERROR]: %v", err)
 		return nil, err
 	}
-	images := make([]*pb.Image, 0, len(resp.Images))
-	if len(resp.Images) != 0 {
-		for _, image := range resp.Images {
-			images = append(images, &pb.Image{
-				Id:     image.Id,
-				Link:   image.Link,
-				PostId: image.PostId,
-			})
-		}
-	}
 
 	return &pb.GetPostByIdResponse{
-		Post: &pb.Post{
+		Post: &pb.PostV2{
 			Id:          resp.Id,
 			Title:       resp.Title,
 			Description: resp.Description,
 			CreatedAt:   resp.CreatedAt.Format("2006-01-02 15:04:05"),
-			Images:      images,
+			Images:      resp.Images,
 			Categories:  resp.Categories,
-			UpdatedAt:   resp.UpdatedAt.Format("2006-01-02 15:04:05"),
-			AccountId:   resp.AccountId,
+			//UpdatedAt:   resp.UpdatedAt.Format("2006-01-02 15:04:05"),
+			UserId:      resp.UserId,
 		},
 	}, err
 }
@@ -153,10 +143,10 @@ func (i *Implementation) GetAllUsersPosts(ctx context.Context, req *pb.GetAllUse
 		return nil, err
 	}
 
-	postsResp := make([]*pb.GetAllUsersPostsResponse_Post, 0, len(posts))
+	postsResp := make([]*pb.PostV2, 0, len(posts))
 	if len(posts) > 0 {
 		for _, post := range posts {
-			postsResp = append(postsResp, &pb.GetAllUsersPostsResponse_Post{
+			postsResp = append(postsResp, &pb.PostV2{
 				Id:          post.Id,
 				Title:       post.Title,
 				Description: post.Description,

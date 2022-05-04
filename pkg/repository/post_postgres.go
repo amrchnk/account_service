@@ -128,11 +128,10 @@ func (r *PostPostgres) DeletePostById(postId int64) error {
 	return tx.Commit()
 }
 
-func (r *PostPostgres) GetPostById(postId int64) (models.Post, error) {
+func (r *PostPostgres) GetPostById(postId int64) (models.PostV2, error) {
 	mu.Lock()
 	defer mu.Unlock()
-	var post models.Post
-	var images []models.Image
+	var post models.PostV2
 	var postExist bool
 
 	err := r.db.QueryRowx(fmt.Sprintf("SELECT 1 FROM %s WHERE id=$1", postTable), postId).Scan(&postExist)
@@ -147,38 +146,28 @@ func (r *PostPostgres) GetPostById(postId int64) (models.Post, error) {
 		return post, err
 	}
 
-	selectImagesQuery := fmt.Sprintf("SELECT * FROM %s WHERE post_id=$1", imageTable)
-	err = r.db.Select(&images, selectImagesQuery, postId)
+	selectImagesQuery := fmt.Sprintf("SELECT link as image FROM %s WHERE post_id=$1", imageTable)
+	err = r.db.Select(&post.Images, selectImagesQuery, postId)
 
 	if err != nil {
 		log.Printf("[ERROR]: %v", err)
 		return post, err
 	}
 
-	var categories []uint8
-	selectCategoriesQuery := fmt.Sprintf("SELECT category_id FROM %s WHERE post_id=$1", postsCategoriesTable)
-	err = r.db.Select(&categories, selectCategoriesQuery, postId)
-
+	selectCategoriesQuery := fmt.Sprintf("SELECT c.title as category FROM category c INNER JOIN posts_have_categories phc ON c.id=phc.category_id INNER JOIN post p ON p.id=phc.post_id WHERE p.id=$1")
+	err = r.db.Select(&post.Categories, selectCategoriesQuery, postId)
 	if err != nil {
 		log.Printf("[ERROR]: %v", err)
 		return post, err
 	}
 
-	if len(categories) > 0 {
-		for _, category := range categories {
-			post.Categories = append(post.Categories, int64(category))
-		}
-	}
-
-	selectPostQuery := fmt.Sprintf("SELECT * FROM %s WHERE id=$1", postTable)
+	selectPostQuery := fmt.Sprintf("SELECT p.id,p.title,p.description,p.created_at,ac.user_id FROM %s p inner join %s ac on ac.id=p.account_id WHERE p.id=$1", postTable, accountsTable)
 	err = r.db.Get(&post, selectPostQuery, postId)
 
 	if err != nil {
 		log.Printf("[ERROR]: %v", err)
 		return post, err
 	}
-
-	post.Images = images
 
 	return post, nil
 }
@@ -343,11 +332,11 @@ func (r *PostPostgres) GetPostsByUserId(userId int64) ([]models.Post, error) {
 	return posts, err
 }
 
-func (r *PostPostgres) GetAllUsersPosts(offset, limit int64, sorting string) ([]models.GetAllUsersPosts, error) {
+func (r *PostPostgres) GetAllUsersPosts(offset, limit int64, sorting string) ([]models.PostV2, error) {
 	mu.Lock()
 	defer mu.Unlock()
 
-	var posts []models.GetAllUsersPosts
+	var posts []models.PostV2
 
 	selectPostsQuery := fmt.Sprintf("SELECT p.id as id, p.title as title, p.description as description, p.created_at as created_at, ac.user_id as user_id FROM %s p INNER JOIN %s ac ON p.account_id=ac.id", postTable, accountsTable)
 	switch sorting {

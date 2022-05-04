@@ -19,7 +19,7 @@ type Image struct {
 	PostId int64  `json:"post_id" db:"post_id" binding:"required"`
 }
 
-type GetAllUsersPosts struct {
+type PostV2 struct {
 	Id          int64     `json:"id" db:"id"`
 	Title       string    `json:"title" db:"title" binding:"required"`
 	Description string    `json:"description" db:"description"`
