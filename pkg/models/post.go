@@ -29,3 +29,11 @@ type PostV2 struct {
 	Categories  []string   `json:"categories,omitempty" db:"category"`
 	UserId     int64     `json:"user_id" db:"user_id" binding:"required"`
 }
+
+type UpdatePost struct {
+	Id          int64     `json:"id" db:"id"`
+	Title       string    `json:"title" db:"title" binding:"required"`
+	Description string    `json:"description" db:"description"`
+	Images      []string  `json:"images" db:"image"`
+	Categories  []int64   `json:"categories,omitempty" db:"category"`
+}

@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"github.com/amrchnk/account_service/pkg/models"
 	"github.com/jmoiron/sqlx"
+	"github.com/lib/pq"
 	"log"
 	"strings"
 	"time"
@@ -161,7 +162,7 @@ func (r *PostPostgres) GetPostById(postId int64) (models.PostV2, error) {
 		return post, err
 	}
 
-	selectPostQuery := fmt.Sprintf("SELECT p.id,p.title,p.description,p.created_at,ac.user_id FROM %s p inner join %s ac on ac.id=p.account_id WHERE p.id=$1", postTable, accountsTable)
+	selectPostQuery := fmt.Sprintf("SELECT p.id,p.title,p.description,p.created_at,p.updated_at,ac.user_id FROM %s p inner join %s ac on ac.id=p.account_id WHERE p.id=$1", postTable, accountsTable)
 	err = r.db.Get(&post, selectPostQuery, postId)
 
 	if err != nil {
@@ -172,7 +173,7 @@ func (r *PostPostgres) GetPostById(postId int64) (models.PostV2, error) {
 	return post, nil
 }
 
-func (r *PostPostgres) UpdatePostByd(post models.Post) (string, error) {
+func (r *PostPostgres) UpdatePostByd(post models.UpdatePost) (string, error) {
 	mu.Lock()
 	defer mu.Unlock()
 
@@ -197,14 +198,9 @@ func (r *PostPostgres) UpdatePostByd(post models.Post) (string, error) {
 			return "", err
 		}
 
-		createImagesQuery := fmt.Sprintf("INSERT INTO %s (link, post_id) VALUES ", imageTable)
-		var inserts []string
-		for _, image := range post.Images {
-			inserts = append(inserts, fmt.Sprintf("('%s',%d)", image.Link, post.Id))
-		}
-		createImagesQuery += strings.Join(inserts, ",")
+		createImagesQuery := fmt.Sprintf("INSERT INTO %s (post_id,link) select %d, unnest($1::text[])", imageTable,post.Id)
 
-		_, err = tx.Exec(createImagesQuery)
+		_, err = tx.Exec(createImagesQuery,pq.Array(post.Images))
 
 		if err != nil {
 			log.Printf("[ERROR]: %v", err)
@@ -222,14 +218,10 @@ func (r *PostPostgres) UpdatePostByd(post models.Post) (string, error) {
 			return "", err
 		}
 
-		createPostsCategoriesQuery := fmt.Sprintf("INSERT INTO %s (category_id, post_id) VALUES ", postsCategoriesTable)
-		var inserts []string
-		for _, category := range post.Categories {
-			inserts = append(inserts, fmt.Sprintf("('%d',%d)", category, post.Id))
-		}
-		createPostsCategoriesQuery += strings.Join(inserts, ",")
 
-		_, err = tx.Exec(createPostsCategoriesQuery)
+		createPostsCategoriesQuery := fmt.Sprintf("INSERT INTO %s (post_id,category_id) select %d, unnest($1::int[])", postsCategoriesTable,post.Id)
+
+		_, err = tx.Exec(createPostsCategoriesQuery,pq.Array(post.Categories))
 
 		if err != nil {
 			log.Printf("[ERROR]: %v", err)
@@ -243,8 +235,7 @@ func (r *PostPostgres) UpdatePostByd(post models.Post) (string, error) {
 	argId := 1
 
 	setValues = append(setValues, fmt.Sprintf("updated_at=$%d", argId))
-	post.UpdatedAt = time.Now()
-	args = append(args, post.UpdatedAt)
+	args = append(args, time.Now())
 	argId++
 
 	if post.Title != "" {
@@ -338,7 +329,7 @@ func (r *PostPostgres) GetAllUsersPosts(offset, limit int64, sorting string) ([]
 
 	var posts []models.PostV2
 
-	selectPostsQuery := fmt.Sprintf("SELECT p.id as id, p.title as title, p.description as description, p.created_at as created_at, ac.user_id as user_id FROM %s p INNER JOIN %s ac ON p.account_id=ac.id", postTable, accountsTable)
+	selectPostsQuery := fmt.Sprintf("SELECT p.id as id, p.title as title, p.description as description, p.updated_at, p.created_at as created_at, ac.user_id as user_id FROM %s p INNER JOIN %s ac ON p.account_id=ac.id", postTable, accountsTable)
 	switch sorting {
 	case "asc":
 		selectPostsQuery += fmt.Sprintf(" ORDER BY p.created_at")

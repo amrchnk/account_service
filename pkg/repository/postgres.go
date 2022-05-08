@@ -7,9 +7,10 @@ import (
 )
 
 const (
-	accountsTable         = "account"
-	postTable             = "post"
-	imageTable            = "image"
+	accountsTable = "account"
+	categoryTable = "category"
+	postTable     = "post"
+	imageTable           = "image"
 	postsCategoriesTable = "posts_have_categories"
 )
 

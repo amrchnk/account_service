@@ -25,7 +25,7 @@ func (s *PostService) GetPostById(postId int64) (models.PostV2, error) {
 	return s.repo.GetPostById(postId)
 }
 
-func (s *PostService) UpdatePostByd(post models.Post) (string, error) {
+func (s *PostService) UpdatePostByd(post models.UpdatePost) (string, error) {
 	return s.repo.UpdatePostByd(post)
 }
 

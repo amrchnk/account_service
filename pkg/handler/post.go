@@ -54,26 +54,20 @@ func (i *Implementation) GetPostById(ctx context.Context, req *pb.GetPostByIdReq
 			CreatedAt:   resp.CreatedAt.Format("2006-01-02 15:04:05"),
 			Images:      resp.Images,
 			Categories:  resp.Categories,
-			//UpdatedAt:   resp.UpdatedAt.Format("2006-01-02 15:04:05"),
+			UpdatedAt:   resp.UpdatedAt.Format("2006-01-02 15:04:05"),
 			UserId:      resp.UserId,
 		},
 	}, err
 }
 
 func (i *Implementation) UpdatePostById(ctx context.Context, req *pb.UpdatePostByIdRequest) (*pb.UpdatePostByIdResponse, error) {
-	images := make([]models.Image, 0, len(req.Post.Images))
-	for i := range req.Post.Images {
-		images = append(images, models.Image{
-			Link: req.Post.Images[i].Link,
-		})
-	}
 
-	request := models.Post{
-		Id:          req.Post.Id,
-		Title:       req.Post.Title,
-		Description: req.Post.Description,
-		Images:      images,
-		Categories:  req.Post.Categories,
+	request := models.UpdatePost{
+		Id:          req.PostId,
+		Title:       req.Title,
+		Description: req.Description,
+		Images:      req.Images,
+		Categories:  req.Categories,
 	}
 
 	resp, err := i.Service.UpdatePostByd(request)
@@ -151,6 +145,7 @@ func (i *Implementation) GetAllUsersPosts(ctx context.Context, req *pb.GetAllUse
 				Title:       post.Title,
 				Description: post.Description,
 				CreatedAt:   post.CreatedAt.Format("2006-01-02 15:04:05"),
+				UpdatedAt:   post.UpdatedAt.Format("2006-01-02 15:04:05"),
 				Images:      post.Images,
 				Categories:  post.Categories,
 				UserId:      post.UserId,

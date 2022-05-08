@@ -16,7 +16,7 @@ type Post interface {
 	DeletePostById(postId int64) error
 	GetPostById(postId int64) (models.PostV2, error)
 	GetPostsByUserId(userId int64) ([]models.Post, error)
-	UpdatePostByd(post models.Post) (string, error)
+	UpdatePostByd(post models.UpdatePost) (string, error)
 	GetAllUsersPosts(offset, limit int64, sorting string) ([]models.PostV2, error)
 }
 

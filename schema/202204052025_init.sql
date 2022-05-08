@@ -24,7 +24,7 @@ CREATE TABLE IF NOT EXISTS public.comment
     created_at   timestamp without time zone NOT NULL DEFAULT NOW(),
     updated_at   timestamp without time zone NOT NULL DEFAULT NOW(),
     post_id      bigint REFERENCES public.post (id) ON DELETE CASCADE,
-    user_id      bigint                      NOT NULL
+    account_id      bigint                      NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS public.tag
