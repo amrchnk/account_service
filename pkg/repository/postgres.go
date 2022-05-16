@@ -8,7 +8,6 @@ import (
 
 const (
 	accountsTable = "account"
-	categoryTable = "category"
 	postTable     = "post"
 	imageTable           = "image"
 	postsCategoriesTable = "posts_have_categories"

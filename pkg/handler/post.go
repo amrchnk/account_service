@@ -33,7 +33,7 @@ func (i *Implementation) CreatePost(ctx context.Context, req *pb.CreatePostReque
 		return nil, err
 	}
 
-	log.Printf("[INFO] Account with id = %d was created", postId)
+	log.Printf("[INFO] Post with id = %d was created", postId)
 	return &pb.CreatePostResponse{
 		Id: postId,
 	}, err
