@@ -6,14 +6,14 @@ import (
 	"sync"
 )
 
-type Implementation struct {
+type AccountImplementation struct {
 	pb.UnimplementedAccountServiceServer
 	*service.Service
 	mu sync.Mutex
 }
 
-func NewService(s *service.Service) *Implementation {
-	return &Implementation{
+func NewService(s *service.Service) *AccountImplementation {
+	return &AccountImplementation{
 		Service: s,
 	}
 }

@@ -6,7 +6,7 @@ import (
 	"log"
 )
 
-func (i *Implementation) GetImagesFromPost(ctx context.Context, req *pb.GetImagesFromPostRequest) (*pb.GetImagesFromPostResponse, error) {
+func (i *AccountImplementation) GetImagesFromPost(ctx context.Context, req *pb.GetImagesFromPostRequest) (*pb.GetImagesFromPostResponse, error) {
 	images, err := i.Service.GetImagesFromPost(req.PostId)
 	if err != nil {
 		log.Printf("[ERROR]: %v", err)

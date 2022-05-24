@@ -20,6 +20,12 @@ type Post interface {
 	GetAllUsersPosts(offset, limit int64, sorting string) ([]models.PostV2, error)
 }
 
+/*type Comments interface{
+	CreateComment(post models.Comment) (int64, error)
+	DeleteCommentById(CommentId int64) error
+	GetPostComments(postId int64) ([]models.Comment, error)
+}
+*/
 type Images interface {
 	GetImagesFromPost(postId int64) ([]models.Image, error)
 }

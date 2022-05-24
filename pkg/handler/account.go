@@ -7,7 +7,7 @@ import (
 	"log"
 )
 
-func (i *Implementation) CreateAccountByUserId(ctx context.Context, req *pb.CreateAccountRequest) (*pb.CreateAccountResponse, error) {
+func (i *AccountImplementation) CreateAccountByUserId(ctx context.Context, req *pb.CreateAccountRequest) (*pb.CreateAccountResponse, error) {
 	accountId, err := i.Service.CreateAccountByUserId(req.UserId)
 	if err != nil {
 		return nil, err
@@ -18,7 +18,7 @@ func (i *Implementation) CreateAccountByUserId(ctx context.Context, req *pb.Crea
 	}, err
 }
 
-func (i *Implementation) DeleteAccountByUserId(ctx context.Context, req *pb.DeleteAccountByUserIdRequest) (*pb.DeleteAccountByUserIdResponse, error) {
+func (i *AccountImplementation) DeleteAccountByUserId(ctx context.Context, req *pb.DeleteAccountByUserIdRequest) (*pb.DeleteAccountByUserIdResponse, error) {
 	err := i.Service.DeleteAccountByUserId(req.UserId)
 	if err != nil {
 		return &pb.DeleteAccountByUserIdResponse{Message: string(err.Error())}, err
@@ -27,7 +27,7 @@ func (i *Implementation) DeleteAccountByUserId(ctx context.Context, req *pb.Dele
 	return &pb.DeleteAccountByUserIdResponse{Message: fmt.Sprintf("Account with userId = %d was delete successful",req.UserId)}, nil
 }
 
-func (i *Implementation) GetAccountByUserId(ctx context.Context, req *pb.GetAccountByUserIdRequest) (*pb.GetAccountByUserIdResponse, error) {
+func (i *AccountImplementation) GetAccountByUserId(ctx context.Context, req *pb.GetAccountByUserIdRequest) (*pb.GetAccountByUserIdResponse, error) {
 	account, err := i.Service.GetAccountByUserId(req.UserId)
 	if err != nil {
 		return nil, err

@@ -9,7 +9,7 @@ import (
 	"time"
 )
 
-func (i *Implementation) CreatePost(ctx context.Context, req *pb.CreatePostRequest) (*pb.CreatePostResponse, error) {
+func (i *AccountImplementation) CreatePost(ctx context.Context, req *pb.CreatePostRequest) (*pb.CreatePostResponse, error) {
 	images := make([]models.Image, 0, len(req.Post.Images))
 	for i := range req.Post.Images {
 		images = append(images, models.Image{
@@ -39,7 +39,7 @@ func (i *Implementation) CreatePost(ctx context.Context, req *pb.CreatePostReque
 	}, err
 }
 
-func (i *Implementation) GetPostById(ctx context.Context, req *pb.GetPostByIdRequest) (*pb.GetPostByIdResponse, error) {
+func (i *AccountImplementation) GetPostById(ctx context.Context, req *pb.GetPostByIdRequest) (*pb.GetPostByIdResponse, error) {
 	resp, err := i.Service.GetPostById(req.Id)
 	if err != nil {
 		log.Printf("[ERROR]: %v", err)
@@ -60,7 +60,7 @@ func (i *Implementation) GetPostById(ctx context.Context, req *pb.GetPostByIdReq
 	}, err
 }
 
-func (i *Implementation) UpdatePostById(ctx context.Context, req *pb.UpdatePostByIdRequest) (*pb.UpdatePostByIdResponse, error) {
+func (i *AccountImplementation) UpdatePostById(ctx context.Context, req *pb.UpdatePostByIdRequest) (*pb.UpdatePostByIdResponse, error) {
 
 	request := models.UpdatePost{
 		Id:          req.PostId,
@@ -81,7 +81,7 @@ func (i *Implementation) UpdatePostById(ctx context.Context, req *pb.UpdatePostB
 	}, err
 }
 
-func (i *Implementation) DeletePostById(ctx context.Context, req *pb.DeletePostByIdRequest) (*pb.DeletePostByIdResponse, error) {
+func (i *AccountImplementation) DeletePostById(ctx context.Context, req *pb.DeletePostByIdRequest) (*pb.DeletePostByIdResponse, error) {
 	err := i.Service.DeletePostById(req.Id)
 	if err != nil {
 		log.Printf("[ERROR]: %v", err)
@@ -92,7 +92,7 @@ func (i *Implementation) DeletePostById(ctx context.Context, req *pb.DeletePostB
 	}, err
 }
 
-func (i *Implementation) GetPostsByUserId(ctx context.Context, req *pb.GetUserPostsRequest) (*pb.GetUserPostsResponse, error) {
+func (i *AccountImplementation) GetPostsByUserId(ctx context.Context, req *pb.GetUserPostsRequest) (*pb.GetUserPostsResponse, error) {
 	posts, err := i.Service.GetPostsByUserId(req.UserId)
 	if err != nil {
 		log.Printf("[ERROR]: %v", err)
@@ -130,7 +130,7 @@ func (i *Implementation) GetPostsByUserId(ctx context.Context, req *pb.GetUserPo
 	}, err
 }
 
-func (i *Implementation) GetAllUsersPosts(ctx context.Context, req *pb.GetAllUsersPostsRequest) (*pb.GetAllUsersPostsResponse, error) {
+func (i *AccountImplementation) GetAllUsersPosts(ctx context.Context, req *pb.GetAllUsersPostsRequest) (*pb.GetAllUsersPostsResponse, error) {
 	posts, err := i.Service.GetAllUsersPosts(req.Offset, req.Limit, req.Sorting)
 	if err != nil {
 		log.Printf("[ERROR]: %v", err)

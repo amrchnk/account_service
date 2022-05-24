@@ -1,8 +1,11 @@
 package service
 
 import (
+	"database/sql"
+	"errors"
 	"github.com/amrchnk/account_service/pkg/models"
 	"github.com/amrchnk/account_service/pkg/repository"
+	"log"
 )
 
 type AccountService struct {
@@ -22,5 +25,17 @@ func (s *AccountService) DeleteAccountByUserId(userId int64) error {
 }
 
 func (s *AccountService) GetAccountByUserId(userId int64) (models.Account, error) {
-	return s.repo.GetAccountByUserId(userId)
+	account,err:=s.repo.GetAccountByUserId(userId)
+	if err!=nil{
+		if errors.Is(err, sql.ErrNoRows) {
+			accountID,err:=s.repo.CreateAccountByUserId(userId)
+			if err!=nil{
+				log.Printf("[ERROR]: %v",err)
+				return account,err
+			}
+			log.Printf("[INFO]: account with id %d was created",accountID)
+			return models.Account{Id: accountID,UserId: userId},nil
+		}
+	}
+	return account,err
 }

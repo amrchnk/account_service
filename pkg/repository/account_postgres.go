@@ -1,8 +1,6 @@
 package repository
 
 import (
-	"database/sql"
-	"errors"
 	"fmt"
 	"github.com/amrchnk/account_service/pkg/models"
 	"github.com/jmoiron/sqlx"
@@ -52,9 +50,10 @@ func (r *AccountPostgres) GetAccountByUserId(userId int64) (models.Account, erro
 	var account models.Account
 	GetAccountQuery := fmt.Sprintf("SELECT * FROM %s where user_id=$1", accountsTable)
 	err := r.db.Get(&account, GetAccountQuery, userId)
-	if errors.Is(err, sql.ErrNoRows) {
+	if err!=nil{
 		log.Printf("[ERROR]: %v",err)
-		return account,errors.New("account doesn't exist")
+		return account,err
 	}
+
 	return account, err
 }
